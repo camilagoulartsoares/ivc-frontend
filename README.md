@@ -1,69 +1,36 @@
-# React + TypeScript + Vite
+# Vitrine de Startups | Investidores.vc
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este é um projeto em **Next.js + TypeScript** que consome a API pública da [Investidores.vc](https://investidores.vc) para listar, filtrar e visualizar detalhes de startups brasileiras, no estilo "Netflix de Startups".
 
-Currently, two official plugins are available:
+## 🚀 Funcionalidades atuais
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Listagem de startups
+- Filtros por nome, vertical e localização
+- Modal com detalhes da startup
+- Integração com a API protegida por API Key
+- Estilização customizada com CSS
 
-## Expanding the ESLint configuration
+<!-- ## ✅ Em desenvolvimento
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Login e Cadastro de usuários
+- Favoritar startups
+- Deletar startups (admin)
+- Paginação com carregamento dinâmico
+- Sistema de autenticação com JWT -->
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🧪 Tecnologias
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- [Next.js 14+](https://nextjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Axios](https://axios-http.com/)
+- [Investidores.vc API](https://make.investidores.vc)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🛠 Como rodar o projeto
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+```bash
+git clone https://github.com/camilagoulartsoares/ivc
+cd ivc
+npm install
+cp .env.local.example .env.local
+# Adicione sua API Key ao arquivo
+npm run dev
