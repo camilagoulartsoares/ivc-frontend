@@ -1,4 +1,4 @@
-import { SearchIcon } from "../icons/SearchIcon"
+import { SearchIcon } from "../../icons/SearchIcon"
 
 type Props = {
   searchTerm: string

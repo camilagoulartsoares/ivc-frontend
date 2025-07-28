@@ -1,6 +1,6 @@
-import { MapPinIcon } from "../icons/MapPinIcon"
-import { TrendingUpIcon } from "../icons/TrendingUpIcon"
-import type { Startup } from "../types/startup"
+import { MapPinIcon } from "../../icons/MapPinIcon"
+import { TrendingUpIcon } from "../../icons/TrendingUpIcon"
+import type { Startup } from "../../types/startup"
 
 type Props = {
   startup: Startup

@@ -1,5 +1,5 @@
-import { StartupCard } from "./StartupCard"
-import type { Startup } from "../types/startup"
+import { StartupCard } from "../StartupCard/StartupCard"
+import type { Startup } from "../../types/startup"
 
 type Props = {
   startups: Startup[]

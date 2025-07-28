@@ -1,9 +1,9 @@
-import { XIcon } from "../icons/XIcon"
-import { GlobeIcon } from "../icons/GlobeIcon"
-import { MailIcon } from "../icons/MailIcon"
-import { MapPinIcon } from "../icons/MapPinIcon"
-import { TrendingUpLargeIcon } from "../icons/TrendingUpLargeIcon"
-import type { Startup } from "../types/startup"
+import { XIcon } from "../../icons/XIcon"
+import { GlobeIcon } from "../../icons/GlobeIcon"
+import { MailIcon } from "../../icons/MailIcon"
+import { MapPinIcon } from "../../icons/MapPinIcon"
+import { TrendingUpLargeIcon } from "../../icons/TrendingUpLargeIcon"
+import type { Startup } from "../../types/startup"
 
 type Props = {
   startup: Startup

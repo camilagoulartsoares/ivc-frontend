@@ -1,12 +1,12 @@
 import { useState } from "react"
 import { useStartups } from "./hooks/useStartups"
-import { Header } from "./components/Header"
-import { Filters } from "./components/Filters"
-import { StartupGrid } from "./components/StartupGrid"
-import { StartupModal } from "./components/StartupModal"
+import { Header } from "./components/Header/Header"
+import { Filters } from "./components/Filters/Filters"
+import { StartupGrid } from "./components/StartupGrid/StartupGrid"
+import { StartupModal } from "./components/StartupModal/StartupModal"
 import { LargeSearchIcon } from "./icons/LargeSearchIcon"
 import type { Startup } from "./types/startup"
-
+import "./styles/globals.css"  
 export default function App() {
   const {
     filteredStartups,
@@ -38,7 +38,15 @@ export default function App() {
   }
 
   return (
-    <div style={{ padding: "32px 16px", maxWidth: "1200px", margin: "0 auto" }}>
+   <div
+    style={{
+      paddingTop: "90px", // espaço para header fixo (aumentei para 90px)
+      maxWidth: "1200px",
+      margin: "0 auto",
+      paddingLeft: "2rem",  // espaço lateral extra
+      paddingRight: "2rem",
+    }}
+  >
       <Header />
 
       <Filters
