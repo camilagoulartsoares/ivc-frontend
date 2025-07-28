@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { api } from "@/services/api"
+import React from "react"
 
 export default function Home() {
   const [data, setData] = useState<any>(null)

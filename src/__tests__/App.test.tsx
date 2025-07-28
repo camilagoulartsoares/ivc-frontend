@@ -1,15 +1,13 @@
 import React from "react"
 import { render } from "@testing-library/react"
 import App from "../pages/_app"
-
+import Home from "../pages/index"
 
 describe("App", () => {
-  it("renderiza sem erros", () => {
-    const DummyComponent = () => <div>Teste</div>
-
+  it("renderiza a página Home sem erros", () => {
     render(
       <App
-        Component={DummyComponent}
+        Component={Home}
         pageProps={{}}
         router={{} as any}
       />
