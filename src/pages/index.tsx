@@ -8,7 +8,6 @@ import Header from "@/components/Header/Header"
 import Footer from "@/components/Footer/Footer"
 import { api } from "@/services/api"
 import { apiPublic } from "@/services/apiPublic"
-import Loading from "@/components/Loading/Loading"
 import styles from "./Home.module.css"
 
 export default function Home() {
@@ -79,7 +78,6 @@ export default function Home() {
   }
 
   if (error) return <p>Erro: {error}</p>
-  if (!data.length) return <Loading />
 
   const verticalOptions = Array.from(new Set(data.map((s) => s.vertical)))
   const localizacaoOptions = Array.from(new Set(data.map((s) => s.localizacao)))
@@ -131,7 +129,11 @@ export default function Home() {
           localizacaoOptions={localizacaoOptions}
         />
 
-        {filtered.length === 0 ? (
+        {!data.length ? (
+          <p style={{ marginTop: "40px", fontSize: "18px", textAlign: "center", color: "#6b7280" }}>
+            Carregando...
+          </p>
+        ) : filtered.length === 0 ? (
           <p style={{ marginTop: "40px", fontSize: "18px", textAlign: "center", color: "#6b7280" }}>
             Nenhuma startup encontrada com esses filtros.
           </p>
