@@ -1,13 +1,88 @@
 .footer {
-  background: #f9fafb;
-  padding: 24px;
-  text-align: center;
-  margin-top: 48px;
+  background-color: #fff;
+  color: #1f2937;
+  padding: 2rem 1rem;
   border-top: 1px solid #e5e7eb;
 }
 
-.text {
+.container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .container {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.logoTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.description {
+  font-size: 0.875rem;
   color: #6b7280;
+}
+
+.social {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.socialLink {
+  color: #6b7280;
+  transition: color 0.2s ease;
+}
+
+.socialLink:hover {
+  color: #1f2937;
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
   margin: 0;
-  font-size: 14px;
+}
+
+.link {
+  font-size: 0.875rem;
+  color: #6b7280;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: #1f2937;
+}
+
+.contact {
+  font-size: 0.875rem;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.bottom {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6b7280;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 1rem;
 }
