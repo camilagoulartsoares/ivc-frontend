@@ -1,6 +1,7 @@
 import React from "react"
 import styles from "./styles.module.css"
 import { MapPin, LineChart, Heart, Pencil, Trash2 } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 interface StartupCardProps {
   id: string
@@ -29,6 +30,8 @@ export default function StartupCard({
   onToggleFavorite,
   isMinha,
 }: StartupCardProps) {
+  const router = useRouter()
+
   return (
     <div className={styles["card-wrapper"]}>
       <div className={styles["external-buttons"]}>
@@ -48,19 +51,24 @@ export default function StartupCard({
 
         {isMinha && (
           <>
-            <button className={styles["icon-circle-button"]}>
-              <Pencil
-                size={14}
-                color={isFavorited ? "#ef4444" : "#5f5f61ff"}
-              />
-
+            <button
+              className={styles["icon-circle-button"]}
+              onClick={(e) => {
+                e.stopPropagation()
+                router.push(`/editar-startup/${id}`)
+              }}
+            >
+              <Pencil size={14} color="#6b7280" />
             </button>
-            <button className={styles["icon-circle-button"]}>
-              <Trash2
-                size={14}
-                color={isFavorited ? "#ef4444" : "#5f5f61ff"}
-              />
 
+            <button
+              className={styles["icon-circle-button"]}
+              onClick={(e) => {
+                e.stopPropagation()
+                // Aqui você pode chamar a função de deletar futuramente
+              }}
+            >
+              <Trash2 size={14} color="#6b7280" />
             </button>
           </>
         )}
