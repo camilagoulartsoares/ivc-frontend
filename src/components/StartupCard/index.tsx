@@ -45,15 +45,15 @@ export default function StartupCard({
 
       <div className={styles.card}>
         <div className={styles["image-container"]}>
-<img
-src={
-  imagem_de_capa?.startsWith("http") || imagem_de_capa?.startsWith("/")
-    ? imagem_de_capa
-    : `/assets/${imagem_de_capa}`
-}
-  alt={`Imagem de capa da startup ${nome_da_startup}`}
-  className={styles.image}
-/>
+          <img
+            src={
+              imagem_de_capa?.startsWith("http") || imagem_de_capa?.startsWith("/")
+                ? imagem_de_capa
+                : `/assets/${imagem_de_capa}`
+            }
+            alt={`Imagem de capa da startup ${nome_da_startup}`}
+            className={styles.image}
+          />
 
           {cresimento_mom !== undefined && (
             <div className={styles["growth-badge"]}>
