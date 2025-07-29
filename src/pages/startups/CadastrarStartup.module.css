@@ -97,11 +97,12 @@
 
 .button {
   width: 100%;
-  padding: 18px; /* Slightly larger padding */
-  background-color: #000; /* Black button */
-  color: white;
-  font-size: 18px; /* Larger font size */
+  padding: 18px;
+  background-color: #000;
+  color: #fff;
+  font-size: 18px;
   font-weight: 700;
+  text-align: center;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -109,8 +110,12 @@
 }
 
 .button:hover {
-  background-color: #222; /* Darker grey on hover */
+  background-color: #222;
   transform: translateY(-1px);
+}
+
+.button:active {
+  transform: translateY(0);
 }
 
 .button:active {
@@ -162,9 +167,16 @@
   }
 }
 
+.wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
 .secondaryButton {
-  margin-top: 10px;
-  padding: 10px 20px;
+  height: fit-content;
+  margin-top: 40px;
+  padding: 12px 20px;
   background-color: transparent;
   border: 1px solid #ccc;
   color: #333;
@@ -175,4 +187,24 @@
 
 .secondaryButton:hover {
   background-color: #f0f0f0;
+}
+
+
+.backButton {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  padding: 10px 20px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.backButton:hover {
+  background-color: #222;
+  transform: translateY(-1px);
 }

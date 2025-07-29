@@ -5,6 +5,7 @@ import Filters from "@/components/Filters/Filters"
 import { Startup } from "@/types/Startup"
 import Header from "@/components/Header/Header"
 import Footer from "@/components/Footer/Footer"
+import { api } from "@/services/api"
 import { apiPublic } from "@/services/apiPublic"
 import Loading from "@/components/Loading/Loading"
 
@@ -24,8 +25,20 @@ export default function Home() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await apiPublic.get("/03ac72cf-2cf2-40d2-86ac-be411e3be742/startups")
-        setData(response.data)
+        const [publicasRes, minhasRes] = await Promise.all([
+          apiPublic.get<Startup[]>("/03ac72cf-2cf2-40d2-86ac-be411e3be742/startups"),
+          api.get<Startup[]>("/startup")
+        ])
+
+        const minhasFormatadas = minhasRes.data.map((s) => ({
+          ...s,
+          vertical: s.vertical || "Outro",
+          localizacao: s.localizacao || "Não informada",
+          cresimento_mom: s.cresimento_mom || 0
+        }))
+
+        const todas = [...publicasRes.data, ...minhasFormatadas]
+        setData(todas)
       } catch (err: any) {
         setError(err.message)
       }
@@ -59,7 +72,7 @@ export default function Home() {
   const localizacaoOptions = Array.from(new Set(data.map((s) => s.localizacao)))
 
   const filtered = data.filter((startup) =>
-    startup.nome_da_startup.toLowerCase().includes(search.toLowerCase()) &&
+    startup.nome_da_startup?.toLowerCase().includes(search.toLowerCase()) &&
     (vertical ? startup.vertical === vertical : true) &&
     (localizacao ? startup.localizacao === localizacao : true) &&
     (!onlyFavorites || favoritos.includes(String(startup.id)))
