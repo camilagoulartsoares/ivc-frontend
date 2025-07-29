@@ -26,12 +26,21 @@ export default function Home() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const [publicasRes, minhasRes] = await Promise.all([
-          apiPublic.get<Startup[]>("/03ac72cf-2cf2-40d2-86ac-be411e3be742/startups"),
-          api.get<Startup[]>("/startup")
-        ])
+        const publicasRes = await apiPublic.get<Startup[]>("/03ac72cf-2cf2-40d2-86ac-be411e3be742/startups")
 
-        const minhasFormatadas = minhasRes.data.map((s) => ({
+        let minhasResData: Startup[] = []
+
+        const token = localStorage.getItem("token")
+        if (token) {
+          try {
+            const minhasRes = await api.get<Startup[]>("/startup")
+            minhasResData = minhasRes.data
+          } catch (err) {
+            console.warn("Erro ao buscar startups do usuário logado:", err)
+          }
+        }
+
+        const minhasFormatadas = minhasResData.map((s) => ({
           ...s,
           id: String(s.id),
           vertical: s.vertical || "Outro",
@@ -52,12 +61,14 @@ export default function Home() {
         const todas = [...publicasFormatadas, ...minhasFormatadas]
         setData(todas)
       } catch (err: any) {
-        setError(err.message)
+        setError(err.message || "Erro ao carregar startups")
       }
     }
 
     fetchData()
   }, [])
+
+
 
   useEffect(() => {
     const stored = localStorage.getItem("favoritos")
