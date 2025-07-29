@@ -16,6 +16,16 @@ Para executar os testes localmente:
 ```bash
 npm test -->
 
+
+## 🚀 Tecnologias utilizadas
+
+Este projeto foi desenvolvido utilizando:
+
+- [React](https://reactjs.org/) 
+- [Next.js](https://nextjs.org/) 
+
+
+
 🔍 Funcionalidades de Filtro e Paginação
 Esta aplicação implementa filtros e paginação de forma dinâmica e responsiva, com foco em uma boa experiência de navegação:
 
