@@ -100,26 +100,45 @@ export default function Home() {
               ))}
             </div>
 
-            {totalPages > 1 && (
-              <div style={{ marginTop: "24px", textAlign: "center" }}>
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <div style={{ marginTop: "32px", display: "flex", justifyContent: "center", gap: "12px" }}>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                const isActive = page === currentPage
+
+                return (
                   <button
                     key={page}
                     onClick={() => setCurrentPage(page)}
                     style={{
-                      margin: "0 8px",
-                      padding: "8px 16px",
-                      fontWeight: page === currentPage ? "bold" : "normal",
-                      border: "1px solid #ccc",
-                      backgroundColor: page === currentPage ? "#eee" : "white",
-                      cursor: "pointer"
+                      width: "40px",
+                      height: "40px",
+                      borderRadius: "8px",
+                      fontWeight: "500",
+                      border: isActive ? "none" : "1px solid #d1d5db",
+                      backgroundColor: isActive ? "#34d399" : "white",
+                      color: isActive ? "white" : "#111827",
+                      cursor: "pointer",
+                      transition: "all 0.3s ease"
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isActive) {
+                        e.currentTarget.style.backgroundColor = "#2563eb"
+                        e.currentTarget.style.color = "white"
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isActive) {
+                        e.currentTarget.style.backgroundColor = "white"
+                        e.currentTarget.style.color = "#111827"
+                      }
                     }}
                   >
                     {page}
                   </button>
-                ))}
-              </div>
-            )}
+                )
+              })}
+            </div>
+
+
           </>
         )}
       </div>
