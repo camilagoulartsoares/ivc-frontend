@@ -2,6 +2,8 @@ import React from "react"
 import styles from "./styles.module.css"
 import { MapPin, LineChart, Heart, Pencil, Trash2 } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { toast } from "react-toastify"
+import { api } from "@/services/api"
 
 interface StartupCardProps {
   id: string
@@ -31,6 +33,23 @@ export default function StartupCard({
   isMinha,
 }: StartupCardProps) {
   const router = useRouter()
+
+  async function handleDelete() {
+    try {
+      const token = localStorage.getItem("token")
+
+      await api.delete(`/startup/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      toast.success("Startup deletada com sucesso!")
+      router.refresh()
+    } catch (error) {
+      toast.error("Erro ao deletar startup.")
+    }
+  }
 
   return (
     <div className={styles["card-wrapper"]}>
@@ -65,7 +84,7 @@ export default function StartupCard({
               className={styles["icon-circle-button"]}
               onClick={(e) => {
                 e.stopPropagation()
-                // Aqui você pode chamar a função de deletar futuramente
+                handleDelete()
               }}
             >
               <Trash2 size={14} color="#6b7280" />
