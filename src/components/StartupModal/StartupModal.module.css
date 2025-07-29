@@ -81,7 +81,7 @@
 }
 
 .infoBlock {
-  background: #f9fafb;
+  background: #e2e8f0;
   padding: 16px;
   border-radius: 8px;
   text-align: center;
@@ -127,4 +127,50 @@
   border-radius: 8px;
   font-weight: 600;
   text-decoration: none;
+}
+
+.foundersSection {
+  margin-top: 16px;
+  margin-bottom: 24px;
+}
+
+.foundersTitle {
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.foundersList {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.founderCard {
+  background: #f3f4ff;
+  padding: 12px;
+  border-radius: 10px;
+  width: 120px;
+  text-align: center;
+}
+
+.founderPhoto {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #5a64f1;
+  margin-bottom: 8px;
+}
+
+.founderName {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+  color: #111827;
+}
+
+.founderRole {
+  font-size: 13px;
+  color: #6b7280;
 }

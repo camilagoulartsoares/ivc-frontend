@@ -32,6 +32,19 @@ export default function StartupModal({ startup, onClose }: Props) {
           <p>{startup.descricao}</p>
         </div>
 
+        <div className={styles.foundersSection}>
+          <h3 className={styles.foundersTitle}>Fundadores</h3>
+          <div className={styles.foundersList}>
+            {startup.fundadores?.map((founder) => (
+              <div key={founder.email} className={styles.founderCard}>
+                <img src={founder.foto} alt={founder.nome} className={styles.founderPhoto} />
+                <div className={styles.founderName}>{founder.nome}</div>
+                <div className={styles.founderRole}>{founder.cargo}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         <div className={styles.footer}>
           <a href={startup.site} target="_blank" className={styles.button}>Visitar site</a>
         </div>
