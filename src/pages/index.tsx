@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import Head from "next/head"
 import StartupCard from "@/components/StartupCard"
 import StartupModal from "@/components/StartupModal/StartupModal"
 import Filters from "@/components/Filters/Filters"
@@ -84,7 +85,14 @@ export default function Home() {
 
   return (
     <>
+      <Head>
+        <title>Investidores.vc</title>
+        <meta name="description" content="Explore startups promissoras na plataforma Investidores.vc" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
       <Header />
+
       <div style={{ padding: "24px" }}>
         <Filters
           search={search}
