@@ -1,17 +1,49 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/router"
 import styles from "./Header.module.css"
 
 export default function Header() {
+  const router = useRouter()
+  const [showModal, setShowModal] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    setIsLoggedIn(!!token)
+  }, [])
+
+  function handleCreateStartupClick() {
+    const token = localStorage.getItem("token")
+    if (!token) {
+      setShowModal(true)
+    } else {
+      router.push("/startups/cadastrar")
+    }
+  }
+
+  function handleLogout() {
+    localStorage.removeItem("token")
+    setIsLoggedIn(false)
+    router.push("/")
+  }
+
   return (
     <header className={styles.header}>
       <div className={styles.topbar}>
         <Link href="#" className={styles.logo}>
           Startup<span className={styles.logoGray}>Invest</span>
         </Link>
+
         <div className={styles.actions}>
-          <Link href="/login" className={styles.textButton}>Entrar</Link>
-          <Link href="/register" className={styles.primaryButton}>Cadastrar</Link>
+          {isLoggedIn ? (
+            <button onClick={handleLogout} className={styles.textButton}>Logout</button>
+          ) : (
+            <>
+              <Link href="/login" className={styles.textButton}>Entrar</Link>
+              <Link href="/register" className={styles.primaryButton}>Cadastrar</Link>
+            </>
+          )}
         </div>
       </div>
 
@@ -30,19 +62,28 @@ export default function Header() {
           <button
             className={styles.primaryButton}
             onClick={() => {
-              const element = document.getElementById("startup-cards");
+              const element = document.getElementById("startup-cards")
               if (element) {
-                window.scrollTo({ top: element.offsetTop, behavior: 'smooth' });
+                window.scrollTo({ top: element.offsetTop, behavior: "smooth" })
               }
             }}
           >
             Conheça Mais
           </button>
-          <Link href="/register" className={styles.secondaryButton}>
+          <button onClick={handleCreateStartupClick} className={styles.secondaryButton}>
             Cadastrar sua Startup
-          </Link>
+          </button>
         </div>
       </div>
+
+      {showModal && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <p className={styles.modalText}>Oi, fundador, você precisa estar logado para criar uma startup.</p>
+            <button onClick={() => setShowModal(false)} className={styles.modalButton}>Fechar</button>
+          </div>
+        </div>
+      )}
     </header>
   )
 }
