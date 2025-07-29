@@ -17,62 +17,72 @@ Para executar os testes localmente:
 npm test -->
 
 
+# 📊 Vitrine de Startups
+
+Plataforma interativa que apresenta startups em um layout estilo vitrine (como a Netflix), com filtros dinâmicos, favoritos e funcionalidades exclusivas para usuários autenticados.
+
 ## 🚀 Tecnologias utilizadas
+
 Este projeto foi desenvolvido com as seguintes tecnologias:
 
-React
+- React
+- Next.js
+- Axios
+- CSS Modules
+- Jest
+- React Testing Library
 
-Next.js
+## 🖥️ Funcionalidades
 
-🖥️ Funcionalidades
-A plataforma implementa recursos interativos e dinâmicos, focados em navegação fluida e boa experiência do usuário:
+A plataforma implementa recursos interativos e dinâmicos, com foco em navegação fluida e boa experiência do usuário:
 
-🔎 Filtros
-Filtros aplicados localmente, sem novas requisições à API:
+### 🔎 Filtros
 
-Filtro por nome da startup: campo de busca em tempo real.
+Filtros aplicados localmente (sem novas requisições à API):
 
-Filtro por localização: seleção por cidade.
+- **Por nome da startup:** busca em tempo real.
+- **Por localização:** seleção por cidade.
+- **Por vertical:** seleção por setor (ex: Fintech, Edtech).
+- **Favoritas:** exibe apenas startups marcadas como favoritas.
 
-Filtro por vertical: seleção por setor (ex: Fintech, Edtech).
+Esses filtros podem ser combinados para refinar os resultados de forma prática e intuitiva.
 
-Esses filtros permitem refinar a visualização de startups de maneira prática e intuitiva.
+### 📄 Paginação
 
-📄 Paginação
-A listagem de startups é paginada, garantindo desempenho e usabilidade:
+A listagem de startups é paginada:
 
-Os cards são divididos em páginas com botões de navegação.
+- Cards são exibidos por página com botões de navegação.
+- A paginação respeita os filtros aplicados.
 
-A paginação respeita os filtros ativos, mantendo os resultados consistentes.
+### ❤️ Favoritar Startups
 
-❤️ Favoritar Startups
-Funcionalidade que permite o usuário salvar suas startups favoritas:
+- Ícone de coração no canto superior esquerdo de cada card.
+- Ao clicar, o coração muda de cor (cinza → vermelho).
+- Os favoritos são salvos no `localStorage` e persistem após o recarregamento da página.
+- Funcionalidade local, **não depende de login**.
 
-Ícone de coração no canto superior esquerdo do card.
+### 🔐 Funcionalidades para Usuários Logados
 
-Ao clicar, o coração muda de cor (cinza → vermelho).
+Usuários autenticados têm acesso a funcionalidades exclusivas:
 
-Os favoritos são salvos no localStorage, persistindo mesmo ao recarregar a página.
+- **Criar startup**: botão acessível no header, com verificação de autenticação.
+- **Editar startup**: disponível em cards próprios do usuário.
+- **Deletar startup**: com modal de confirmação, também restrito ao dono da startup.
 
-A funcionalidade é local e independente de login.
+## 🧪 Testes
 
-🧪 Testes
-Este projeto utiliza testes automatizados com:
+Este projeto possui testes automatizados utilizando:
 
-Jest
+- [Jest](https://jestjs.io/)
+- [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
 
-React Testing Library
+### 🧫 O que os testes cobrem
 
-Os testes cobrem:
+- Renderização do componente principal (`<App />`) com a página inicial.
+- Comportamento básico da tela inicial (`Home`).
+- Integrações futuras com filtros e listagem de startups.
 
-Renderização do componente principal
+### ▶️ Como rodar os testes localmente
 
-Comportamento básico da página inicial
-
-Integrações futuras com filtros e cards
-
-▶️ Rodando os testes
-bash
-Copiar
-Editar
+```bash
 npm test
