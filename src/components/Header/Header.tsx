@@ -16,11 +16,14 @@ export default function Header() {
       </div>
 
       <div className={styles.hero}>
-        <h1 className={styles.title}>O Netflix das Startups</h1>
+        <h1 className={styles.title}>
+          Conheça as Startups do Futuro.<br />
+          Ou Crie a Sua e Controle Tudo em um Só Lugar.
+        </h1>
+
         <p className={styles.description}>
-          Conheça startups promissoras antes de todo mundo.
-          <br />
-          Enquanto você investe, os próprios fundadores estão por trás cadastrando, atualizando e gerenciando suas startups em um painel exclusivo — tudo para garantir dados reais, atualizados e validados antes de entrar na vitrine.
+          Uma plataforma onde investidores encontram startups reais<br />
+          e fundadores têm total controle sobre suas criações — do cadastro à atualização.
         </p>
 
         <div className={styles.buttons}>

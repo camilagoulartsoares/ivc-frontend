@@ -50,7 +50,6 @@ export default function Home() {
 
   return (
     <>
-
       <Header />
       <div style={{ padding: "24px" }}>
         <Filters
@@ -73,47 +72,55 @@ export default function Home() {
           localizacaoOptions={localizacaoOptions}
         />
 
-        <div
-          style={{
-            display: "grid",
-            gap: "24px",
-            gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))"
-          }}
-        >
-          {currentItems.map((startup) => (
-         <StartupCard
-  key={startup.id}
-  nome_da_startup={startup.nome_da_startup}
-  imagem_de_capa={startup.imagem_de_capa}
-  descricao={startup.descricao}
-  vertical={startup.vertical}
-  localizacao={startup.localizacao}
-  cresimento_mom={startup.cresimento_mom}
-  onClickSaibaMais={() => setSelected(startup)}
-/>
+        {/* MOSTRAR MENSAGEM SE NENHUM RESULTADO */}
+        {filtered.length === 0 ? (
+          <p style={{ marginTop: "40px", fontSize: "18px", textAlign: "center", color: "#6b7280" }}>
+            Nenhuma startup encontrada com esses filtros.
+          </p>
+        ) : (
+          <>
+            <div
+              style={{
+                display: "grid",
+                gap: "24px",
+                gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))"
+              }}
+            >
+              {currentItems.map((startup) => (
+                <StartupCard
+                  key={startup.id}
+                  nome_da_startup={startup.nome_da_startup}
+                  imagem_de_capa={startup.imagem_de_capa}
+                  descricao={startup.descricao}
+                  vertical={startup.vertical}
+                  localizacao={startup.localizacao}
+                  cresimento_mom={startup.cresimento_mom}
+                  onClickSaibaMais={() => setSelected(startup)}
+                />
+              ))}
+            </div>
 
-          ))}
-        </div>
-
-        {totalPages > 1 && (
-          <div style={{ marginTop: "24px", textAlign: "center" }}>
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <button
-                key={page}
-                onClick={() => setCurrentPage(page)}
-                style={{
-                  margin: "0 8px",
-                  padding: "8px 16px",
-                  fontWeight: page === currentPage ? "bold" : "normal",
-                  border: "1px solid #ccc",
-                  backgroundColor: page === currentPage ? "#eee" : "white",
-                  cursor: "pointer"
-                }}
-              >
-                {page}
-              </button>
-            ))}
-          </div>
+            {totalPages > 1 && (
+              <div style={{ marginTop: "24px", textAlign: "center" }}>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    style={{
+                      margin: "0 8px",
+                      padding: "8px 16px",
+                      fontWeight: page === currentPage ? "bold" : "normal",
+                      border: "1px solid #ccc",
+                      backgroundColor: page === currentPage ? "#eee" : "white",
+                      cursor: "pointer"
+                    }}
+                  >
+                    {page}
+                  </button>
+                ))}
+              </div>
+            )}
+          </>
         )}
       </div>
 
@@ -127,5 +134,4 @@ export default function Home() {
       <Footer />
     </>
   )
-
 }
