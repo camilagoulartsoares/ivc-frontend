@@ -1,6 +1,6 @@
 import React from "react"
 import styles from "./styles.module.css"
-import { MapPin, LineChart, Heart } from "lucide-react"
+import { MapPin, LineChart, Heart, Pencil, Trash2 } from "lucide-react"
 
 interface StartupCardProps {
   id: string
@@ -13,6 +13,7 @@ interface StartupCardProps {
   isFavorited: boolean
   onToggleFavorite?: (id: string) => void
   onClickSaibaMais: () => void
+  isMinha?: boolean
 }
 
 export default function StartupCard({
@@ -26,22 +27,44 @@ export default function StartupCard({
   onClickSaibaMais,
   isFavorited,
   onToggleFavorite,
+  isMinha,
 }: StartupCardProps) {
   return (
     <div className={styles["card-wrapper"]}>
-      <button
-        className={styles["external-favorite-button"]}
-        onClick={(e) => {
-          e.stopPropagation()
-          onToggleFavorite?.(id)
-        }}
-      >
-        <Heart
-          size={16}
-          fill={isFavorited ? "#ef4444" : "#d1d5db"}
-          color={isFavorited ? "#ef4444" : "#d1d5db"}
-        />
-      </button>
+      <div className={styles["external-buttons"]}>
+        <button
+          className={styles["icon-circle-button"]}
+          onClick={(e) => {
+            e.stopPropagation()
+            onToggleFavorite?.(id)
+          }}
+        >
+          <Heart
+            size={16}
+            fill={isFavorited ? "#ef4444" : "#d1d5db"}
+            color={isFavorited ? "#ef4444" : "#d1d5db"}
+          />
+        </button>
+
+        {isMinha && (
+          <>
+            <button className={styles["icon-circle-button"]}>
+              <Pencil
+                size={14}
+                color={isFavorited ? "#ef4444" : "#5f5f61ff"}
+              />
+
+            </button>
+            <button className={styles["icon-circle-button"]}>
+              <Trash2
+                size={14}
+                color={isFavorited ? "#ef4444" : "#5f5f61ff"}
+              />
+
+            </button>
+          </>
+        )}
+      </div>
 
       <div className={styles.card}>
         <div className={styles["image-container"]}>

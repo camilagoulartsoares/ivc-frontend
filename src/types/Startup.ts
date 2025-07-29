@@ -6,7 +6,7 @@ export interface Fundador {
 }
 
 export interface Startup {
-  id: number
+  id: string
   nome_da_startup: string
   imagem_de_capa: string
   descricao: string
@@ -19,4 +19,5 @@ export interface Startup {
   site: string
   cresimento_mom: number
   mrr: number
+  isMinha?: boolean
 }

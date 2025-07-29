@@ -23,30 +23,44 @@ export default function Home() {
 
   const itemsPerPage = 10
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const [publicasRes, minhasRes] = await Promise.all([
-          apiPublic.get<Startup[]>("/03ac72cf-2cf2-40d2-86ac-be411e3be742/startups"),
-          api.get<Startup[]>("/startup")
-        ])
+useEffect(() => {
+  async function fetchData() {
+    try {
+      const [publicasRes, minhasRes] = await Promise.all([
+        apiPublic.get<Startup[]>("/03ac72cf-2cf2-40d2-86ac-be411e3be742/startups"),
+        api.get<Startup[]>("/startup")
+      ])
 
-        const minhasFormatadas = minhasRes.data.map((s) => ({
-          ...s,
-          vertical: s.vertical || "Outro",
-          localizacao: s.localizacao || "Não informada",
-          cresimento_mom: s.cresimento_mom || 0
-        }))
+      const minhasFormatadas = minhasRes.data.map((s) => ({
+        ...s,
+        id: String(s.id),
+        vertical: s.vertical || "Outro",
+        localizacao: s.localizacao || "Não informada",
+        cresimento_mom: s.cresimento_mom || 0,
+        isMinha: true
+      }))
 
-        const todas = [...publicasRes.data, ...minhasFormatadas]
-        setData(todas)
-      } catch (err: any) {
-        setError(err.message)
-      }
+      const publicasFormatadas = publicasRes.data.map((s) => ({
+        ...s,
+        id: String(s.id),
+        vertical: s.vertical || "Outro",
+        localizacao: s.localizacao || "Não informada",
+        cresimento_mom: s.cresimento_mom || 0,
+        isMinha: false
+      }))
+
+      const todas = [...publicasFormatadas, ...minhasFormatadas]
+      console.log("Startups carregadas:", todas) // ← aqui você deve ver algumas com isMinha: true
+      setData(todas)
+    } catch (err: any) {
+      setError(err.message)
     }
+  }
 
-    fetchData()
-  }, [])
+  fetchData()
+}, [])
+
+
 
   useEffect(() => {
     const stored = localStorage.getItem("favoritos")
@@ -136,7 +150,7 @@ export default function Home() {
               {currentItems.map((startup) => (
                 <StartupCard
                   key={startup.id}
-                  id={String(startup.id)}
+                  id={startup.id}
                   nome_da_startup={startup.nome_da_startup}
                   imagem_de_capa={startup.imagem_de_capa}
                   descricao={startup.descricao}
@@ -146,7 +160,9 @@ export default function Home() {
                   isFavorited={favoritos.includes(String(startup.id))}
                   onToggleFavorite={toggleFavorite}
                   onClickSaibaMais={() => setSelected(startup)}
+                  isMinha={startup.isMinha}
                 />
+
               ))}
             </div>
 
