@@ -27,7 +27,17 @@ export default function Header() {
         </p>
 
         <div className={styles.buttons}>
-          <button className={styles.primaryButton}>Começar a Investir</button>
+          <button
+            className={styles.primaryButton}
+            onClick={() => {
+              const element = document.getElementById("startup-cards");
+              if (element) {
+                window.scrollTo({ top: element.offsetTop, behavior: 'smooth' });
+              }
+            }}
+          >
+            Conheça Mais
+          </button>
           <Link href="/register" className={styles.secondaryButton}>
             Cadastrar sua Startup
           </Link>

@@ -80,6 +80,7 @@ export default function Home() {
         ) : (
           <>
             <div
+              id="startup-cards" // Adicionando o id para rolar até aqui
               style={{
                 display: "grid",
                 gap: "24px",
@@ -137,8 +138,6 @@ export default function Home() {
                 )
               })}
             </div>
-
-
           </>
         )}
       </div>
