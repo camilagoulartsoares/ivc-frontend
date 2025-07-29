@@ -40,10 +40,10 @@ export default function Footer() {
         <div className={styles.column}>
           <h4 className={styles.title}>Contato</h4>
           <p className={styles.contact}>
-            Rua Exemplo, 123<br />
-            Cidade, Estado - CEP 00000-000<br />
-            Email: contato@startupinvest.com<br />
-            Telefone: (XX) XXXX-XXXX
+            Avenida da Inovação, 456<br />
+            Bairro Criativo, SP - 01234-567<br />
+            Email: contato@startupinvest.dev<br />
+            Telefone: (11) 98765-4321
           </p>
         </div>
       </div>
