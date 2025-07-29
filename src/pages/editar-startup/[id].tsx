@@ -44,7 +44,7 @@ export default function EditarStartupPage() {
   async function handleUpdate() {
     try {
       const token = localStorage.getItem("token")
-      await api.put(
+      await api.patch(
         `/startup/${id}`,
         {
           nome_da_startup: nome,
