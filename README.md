@@ -18,29 +18,61 @@ npm test -->
 
 
 ## 🚀 Tecnologias utilizadas
+Este projeto foi desenvolvido com as seguintes tecnologias:
 
-Este projeto foi desenvolvido utilizando:
+React
 
-- [React](https://reactjs.org/) 
-- [Next.js](https://nextjs.org/) 
+Next.js
 
+🖥️ Funcionalidades
+A plataforma implementa recursos interativos e dinâmicos, focados em navegação fluida e boa experiência do usuário:
 
+🔎 Filtros
+Filtros aplicados localmente, sem novas requisições à API:
 
-🔍 Funcionalidades de Filtro e Paginação
-Esta aplicação implementa filtros e paginação de forma dinâmica e responsiva, com foco em uma boa experiência de navegação:
+Filtro por nome da startup: campo de busca em tempo real.
 
-🔎 Filtros implementados
-Filtro por nome da startup: campo de busca que filtra os cards em tempo real conforme o usuário digita.
+Filtro por localização: seleção por cidade.
 
-Filtro por localização: dropdown que permite selecionar uma cidade específica.
+Filtro por vertical: seleção por setor (ex: Fintech, Edtech).
 
-Filtro por vertical: dropdown com as áreas de atuação (ex: Fintech, Edtech) para filtrar startups por setor.
-
-Todos os filtros são aplicados localmente, ou seja, sem novas requisições à API — melhorando performance e usabilidade.
+Esses filtros permitem refinar a visualização de startups de maneira prática e intuitiva.
 
 📄 Paginação
-A listagem de startups é paginada, permitindo uma navegação mais leve e fluida mesmo com muitos registros.
+A listagem de startups é paginada, garantindo desempenho e usabilidade:
 
-Os cards são divididos por páginas, com botões de navegação para avançar ou voltar entre elas.
+Os cards são divididos em páginas com botões de navegação.
 
-A paginação também respeita os filtros aplicados, mantendo os resultados consistentes.
+A paginação respeita os filtros ativos, mantendo os resultados consistentes.
+
+❤️ Favoritar Startups
+Funcionalidade que permite o usuário salvar suas startups favoritas:
+
+Ícone de coração no canto superior esquerdo do card.
+
+Ao clicar, o coração muda de cor (cinza → vermelho).
+
+Os favoritos são salvos no localStorage, persistindo mesmo ao recarregar a página.
+
+A funcionalidade é local e independente de login.
+
+🧪 Testes
+Este projeto utiliza testes automatizados com:
+
+Jest
+
+React Testing Library
+
+Os testes cobrem:
+
+Renderização do componente principal
+
+Comportamento básico da página inicial
+
+Integrações futuras com filtros e cards
+
+▶️ Rodando os testes
+bash
+Copiar
+Editar
+npm test
