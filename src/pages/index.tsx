@@ -6,6 +6,7 @@ import { Startup } from "@/types/Startup"
 import Header from "@/components/Header/Header"
 import Footer from "@/components/Footer/Footer"
 import { apiPublic } from "@/services/apiPublic"
+import Loading from "@/components/Loading/Loading"
 
 export default function Home() {
   const [data, setData] = useState<Startup[]>([])
@@ -32,7 +33,7 @@ export default function Home() {
   }, [])
 
   if (error) return <p>Erro: {error}</p>
-  if (!data.length) return <p>Carregando...</p>
+  if (!data.length) return <Loading />
 
   const verticalOptions = Array.from(new Set(data.map((s) => s.vertical)))
   const localizacaoOptions = Array.from(new Set(data.map((s) => s.localizacao)))
@@ -80,14 +81,17 @@ export default function Home() {
           }}
         >
           {currentItems.map((startup) => (
-            <StartupCard
-              key={startup.id}
-              nome={startup.nome_da_startup}
-              vertical={startup.vertical}
-              mrr={startup.mrr}
-              imagem={startup.imagem_de_capa}
-              onClick={() => setSelected(startup)}
-            />
+         <StartupCard
+  key={startup.id}
+  nome_da_startup={startup.nome_da_startup}
+  imagem_de_capa={startup.imagem_de_capa}
+  descricao={startup.descricao}
+  vertical={startup.vertical}
+  localizacao={startup.localizacao}
+  cresimento_mom={startup.cresimento_mom}
+  onClickSaibaMais={() => setSelected(startup)}
+/>
+
           ))}
         </div>
 

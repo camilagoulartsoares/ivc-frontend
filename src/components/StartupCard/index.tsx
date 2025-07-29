@@ -1,30 +1,62 @@
 import React from "react"
 import styles from "./styles.module.css"
+import { MapPin, LineChart } from "lucide-react"
+
 
 
 interface StartupCardProps {
-  nome: string
+  nome_da_startup: string
+  imagem_de_capa: string
+  descricao: string
   vertical: string
-  mrr: number
-  imagem: string
-  onClick: () => void
+  localizacao: string
+  cresimento_mom?: number
+  onClickSaibaMais: () => void
 }
 
-export default function StartupCard({ nome, vertical, mrr, imagem, onClick }: StartupCardProps) {
+export default function StartupCard({
+  nome_da_startup,
+  imagem_de_capa,
+  descricao,
+  vertical,
+  localizacao,
+  cresimento_mom,
+  onClickSaibaMais,
+}: StartupCardProps) {
   return (
     <div className={styles.card}>
-      <img
-        src={imagem || "/placeholder.svg?height=160&width=300"}
-        alt={`Imagem de capa da startup ${nome}`}
-        className={styles.image}
-      />
+      <div className={styles["image-container"]}>
+        <img
+          src={imagem_de_capa || "/placeholder.svg?height=160&width=300&query=startup-cover-image"}
+          alt={`Imagem de capa da startup ${nome_da_startup}`}
+          className={styles.image}
+        />
+        {cresimento_mom !== undefined && (
+          <div className={styles["growth-badge"]}>
+            <LineChart size={14} />
+            <span>{`+${(cresimento_mom * 100).toFixed(1)}%`}</span>
+          </div>
+        )}
+      </div>
+
       <div className={styles.content}>
-        <h2 className={styles.nome}>{nome}</h2>
-        <p className={styles.vertical}>Vertical: {vertical}</p>
-        <p className={styles.mrr}>MRR: R$ {mrr.toLocaleString("pt-BR")}</p>
-        <button className={styles.button} onClick={onClick}>
-          Ver detalhes
-        </button>
+        <div className={styles["header-content"]}>
+          <h2 className={styles.nome}>{nome_da_startup}</h2>
+          <span className={styles["vertical-tag"]}>{vertical}</span>
+        </div>
+
+        <p className={styles.description}>{descricao}</p>
+
+        <div className={styles["footer-row"]}>
+          <div className={styles["location-container"]}>
+            <MapPin size={16} className={styles["location-icon"]} />
+            <p className={styles["location-text"]}>{localizacao}</p>
+          </div>
+
+          <button onClick={onClickSaibaMais} className={styles.button}>
+            Saiba mais
+          </button>
+        </div>
       </div>
     </div>
   )

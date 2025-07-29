@@ -25,8 +25,6 @@ export default function Filters({
 }: FiltersProps) {
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Buscar startups...</h1>
-
       <div className={styles.filters}>
         <div className={styles.searchContainer}>
           <Search className={styles.searchIcon} />

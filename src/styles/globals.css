@@ -1,13 +1,16 @@
-
 :root {
-  --background: #ffffff;
+  --background: #914f4f;
   --foreground: #171717;
+  --foreground-light-bg: #171717;
+  --foreground-dark-bg: #ededed;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #f3f1f1;
+    --foreground: #000000;
+    --foreground-light-bg: #171717;
+    --foreground-dark-bg: #ededed;
   }
 }
 
@@ -36,6 +39,11 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+.card {
+  background: white;
+  color: var(--foreground-light-bg);
 }
 
 @media (prefers-color-scheme: dark) {
