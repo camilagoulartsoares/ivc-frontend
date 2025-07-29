@@ -9,6 +9,7 @@ import Footer from "@/components/Footer/Footer"
 import { api } from "@/services/api"
 import { apiPublic } from "@/services/apiPublic"
 import Loading from "@/components/Loading/Loading"
+import styles from "./Home.module.css"
 
 export default function Home() {
   const [data, setData] = useState<Startup[]>([])
@@ -23,44 +24,41 @@ export default function Home() {
 
   const itemsPerPage = 10
 
-useEffect(() => {
-  async function fetchData() {
-    try {
-      const [publicasRes, minhasRes] = await Promise.all([
-        apiPublic.get<Startup[]>("/03ac72cf-2cf2-40d2-86ac-be411e3be742/startups"),
-        api.get<Startup[]>("/startup")
-      ])
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [publicasRes, minhasRes] = await Promise.all([
+          apiPublic.get<Startup[]>("/03ac72cf-2cf2-40d2-86ac-be411e3be742/startups"),
+          api.get<Startup[]>("/startup")
+        ])
 
-      const minhasFormatadas = minhasRes.data.map((s) => ({
-        ...s,
-        id: String(s.id),
-        vertical: s.vertical || "Outro",
-        localizacao: s.localizacao || "Não informada",
-        cresimento_mom: s.cresimento_mom || 0,
-        isMinha: true
-      }))
+        const minhasFormatadas = minhasRes.data.map((s) => ({
+          ...s,
+          id: String(s.id),
+          vertical: s.vertical || "Outro",
+          localizacao: s.localizacao || "Não informada",
+          cresimento_mom: s.cresimento_mom || 0,
+          isMinha: true
+        }))
 
-      const publicasFormatadas = publicasRes.data.map((s) => ({
-        ...s,
-        id: String(s.id),
-        vertical: s.vertical || "Outro",
-        localizacao: s.localizacao || "Não informada",
-        cresimento_mom: s.cresimento_mom || 0,
-        isMinha: false
-      }))
+        const publicasFormatadas = publicasRes.data.map((s) => ({
+          ...s,
+          id: String(s.id),
+          vertical: s.vertical || "Outro",
+          localizacao: s.localizacao || "Não informada",
+          cresimento_mom: s.cresimento_mom || 0,
+          isMinha: false
+        }))
 
-      const todas = [...publicasFormatadas, ...minhasFormatadas]
-      console.log("Startups carregadas:", todas) // ← aqui você deve ver algumas com isMinha: true
-      setData(todas)
-    } catch (err: any) {
-      setError(err.message)
+        const todas = [...publicasFormatadas, ...minhasFormatadas]
+        setData(todas)
+      } catch (err: any) {
+        setError(err.message)
+      }
     }
-  }
 
-  fetchData()
-}, [])
-
-
+    fetchData()
+  }, [])
 
   useEffect(() => {
     const stored = localStorage.getItem("favoritos")
@@ -139,14 +137,7 @@ useEffect(() => {
           </p>
         ) : (
           <>
-            <div
-              id="startup-cards"
-              style={{
-                display: "grid",
-                gap: "24px",
-                gridTemplateColumns: "repeat(5, 1fr)"
-              }}
-            >
+            <div id="startup-cards" className={styles["card-grid"]}>
               {currentItems.map((startup) => (
                 <StartupCard
                   key={startup.id}
@@ -162,7 +153,6 @@ useEffect(() => {
                   onClickSaibaMais={() => setSelected(startup)}
                   isMinha={startup.isMinha}
                 />
-
               ))}
             </div>
 
