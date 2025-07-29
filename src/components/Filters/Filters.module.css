@@ -2,14 +2,6 @@
   margin-bottom: 32px;
 }
 
-.title {
-  font-size: 32px;
-  font-weight: 700;
-  color: #111827;
-  margin-bottom: 24px;
-  line-height: 1.2;
-}
-
 .filters {
   display: flex;
   gap: 16px;
@@ -20,7 +12,7 @@
 .searchContainer {
   position: relative;
   flex: 1;
-  min-width: 300px;
+  min-width: 220px;
 }
 
 .searchIcon {
@@ -33,7 +25,6 @@
   pointer-events: none;
   color: #9ca3af;
 }
-
 
 .searchInput {
   width: 100%;
@@ -57,29 +48,47 @@
   box-shadow: none;
 }
 
-
 .select {
-  width: 160px;
+  width: 140px;
   height: 48px;
-  padding: 0 16px;
+  padding: 0 12px;
   border: 1px solid #d1d5db;
   border-radius: 6px;
-  font-size: 16px;
+  font-size: 14px;
   background: white;
-  cursor: pointer;
-  outline: none;
-  transition: border-color 0.2s ease;
   color: #374151;
+  outline: none;
+  cursor: pointer;
 }
 
 .select:focus {
   border-color: #d1d5db;
-  box-shadow: none;
 }
-
 
 .select option {
   padding: 8px;
+}
+
+.favoriteButton {
+  height: 48px;
+  padding: 0 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.favoriteButton:hover {
+  background: #f3f4f6;
+}
+
+.favoriteButton.active {
+  background: #111827;
+  color: white;
+  border-color: #111827;
 }
 
 @media (max-width: 768px) {
@@ -89,10 +98,14 @@
   }
 
   .searchContainer {
-    min-width: auto;
+    width: 100%;
   }
 
   .select {
+    width: 100%;
+  }
+
+  .favoriteButton {
     width: 100%;
   }
 }

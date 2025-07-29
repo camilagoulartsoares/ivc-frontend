@@ -15,8 +15,9 @@ export default function Home() {
   const [search, setSearch] = useState("")
   const [vertical, setVertical] = useState("")
   const [localizacao, setLocalizacao] = useState("")
-  const [currentPage, setCurrentPage] = useState(1)
+  const [onlyFavorites, setOnlyFavorites] = useState(false)
   const [favoritos, setFavoritos] = useState<string[]>([])
+  const [currentPage, setCurrentPage] = useState(1)
 
   const itemsPerPage = 10
 
@@ -60,7 +61,8 @@ export default function Home() {
   const filtered = data.filter((startup) =>
     startup.nome_da_startup.toLowerCase().includes(search.toLowerCase()) &&
     (vertical ? startup.vertical === vertical : true) &&
-    (localizacao ? startup.localizacao === localizacao : true)
+    (localizacao ? startup.localizacao === localizacao : true) &&
+    (!onlyFavorites || favoritos.includes(String(startup.id)))
   )
 
   const totalPages = Math.ceil(filtered.length / itemsPerPage)
@@ -75,6 +77,7 @@ export default function Home() {
           search={search}
           vertical={vertical}
           localizacao={localizacao}
+          onlyFavorites={onlyFavorites}
           onSearchChange={(value) => {
             setSearch(value)
             setCurrentPage(1)
@@ -85,6 +88,10 @@ export default function Home() {
           }}
           onLocalizacaoChange={(value) => {
             setLocalizacao(value)
+            setCurrentPage(1)
+          }}
+          onOnlyFavoritesChange={(value) => {
+            setOnlyFavorites(value)
             setCurrentPage(1)
           }}
           verticalOptions={verticalOptions}
@@ -120,7 +127,6 @@ export default function Home() {
                   onClickSaibaMais={() => setSelected(startup)}
                 />
               ))}
-
             </div>
 
             <div style={{ marginTop: "32px", display: "flex", justifyContent: "center", gap: "12px" }}>
