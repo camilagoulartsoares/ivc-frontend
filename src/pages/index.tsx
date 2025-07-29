@@ -130,7 +130,7 @@ export default function Home() {
               style={{
                 display: "grid",
                 gap: "24px",
-                gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))"
+                gridTemplateColumns: "repeat(5, 1fr)"
               }}
             >
               {currentItems.map((startup) => (
