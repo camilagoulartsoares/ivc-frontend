@@ -130,9 +130,58 @@ export default function Home() {
         />
 
         {!data.length ? (
-          <p style={{ marginTop: "40px", fontSize: "18px", textAlign: "center", color: "#6b7280" }}>
-            Carregando...
-          </p>
+          <div className={styles["card-grid"]}>
+            {Array.from({ length: itemsPerPage }).map((_, index) => (
+              <div
+                key={index}
+                style={{
+                  background: "#f3f4f6",
+                  borderRadius: "12px",
+                  overflow: "hidden",
+                  boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+                  display: "flex",
+                  flexDirection: "column"
+                }}
+              >
+                <div
+                  style={{
+                    width: "100%",
+                    height: "160px",
+                    backgroundColor: "#e5e7eb"
+                  }}
+                ></div>
+
+                <div style={{ padding: "16px", display: "flex", flexDirection: "column", gap: "12px" }}>
+                  <div
+                    style={{
+                      width: "70%",
+                      height: "16px",
+                      backgroundColor: "#e5e7eb",
+                      borderRadius: "4px"
+                    }}
+                  ></div>
+
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "12px",
+                      backgroundColor: "#e5e7eb",
+                      borderRadius: "4px"
+                    }}
+                  ></div>
+
+                  <div
+                    style={{
+                      width: "40%",
+                      height: "12px",
+                      backgroundColor: "#e5e7eb",
+                      borderRadius: "4px"
+                    }}
+                  ></div>
+                </div>
+              </div>
+            ))}
+          </div>
         ) : filtered.length === 0 ? (
           <p style={{ marginTop: "40px", fontSize: "18px", textAlign: "center", color: "#6b7280" }}>
             Nenhuma startup encontrada com esses filtros.
