@@ -5,18 +5,26 @@ import styles from "./Header.module.css"
 export default function Header() {
   return (
     <header className={styles.header}>
-      <Link href="#" className={styles.logo}>
-        <span className={styles.logoText}>StartupInvest</span>
-      </Link>
-      <nav className={styles.nav}>
-        <Link href="#" className={styles.navLink}>Descobrir</Link>
-        <Link href="#" className={styles.navLink}>Como Funciona</Link>
-        <Link href="#" className={styles.navLink}>Sobre Nós</Link>
-        <Link href="#" className={styles.navLink}>Contato</Link>
-      </nav>
-      <div className={styles.actions}>
-        <button className={styles.ghostButton}>Entrar</button>
-        <button className={styles.primaryButton}>Cadastrar</button>
+      <div className={styles.topbar}>
+        <Link href="#" className={styles.logo}>
+          Startup<span className={styles.logoGray}>Invest</span>
+        </Link>
+        <div className={styles.actions}>
+          <button className={styles.textButton}>Entrar</button>
+          <button className={styles.primaryButton}>Cadastrar</button>
+        </div>
+      </div>
+
+      <div className={styles.hero}>
+        <h1 className={styles.title}>O Netflix das Startups</h1>
+        <p className={styles.description}>
+          Descubra, analise e invista nas startups mais promissoras do Brasil. Dados em tempo real,
+          análises detalhadas e oportunidades exclusivas.
+        </p>
+        <div className={styles.buttons}>
+          <button className={styles.primaryButton}>Começar a Investir</button>
+          <button className={styles.secondaryButton}>Saiba Mais</button>
+        </div>
       </div>
     </header>
   )
