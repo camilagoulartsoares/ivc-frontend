@@ -1,0 +1,47 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e5e7eb;
+  background: white;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.starIcon {
+  width: 24px;
+  height: 24px;
+  color: #4b5563;
+  fill: #4b5563;
+}
+
+.logoText {
+  font-size: 20px;
+  font-weight: 500;
+  color: #111827;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.navButton {
+  background: none;
+  border: none;
+  color: #4b5563;
+  cursor: pointer;
+  font-size: 14px;
+  transition: color 0.2s ease;
+  padding: 4px 8px;
+}
+
+.navButton:hover {
+  color: #111827;
+}
