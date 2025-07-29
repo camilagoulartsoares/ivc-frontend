@@ -1,20 +1,22 @@
 import React from "react"
 import styles from "./styles.module.css"
-import { MapPin, LineChart } from "lucide-react"
-
-
+import { MapPin, LineChart, Heart } from "lucide-react"
 
 interface StartupCardProps {
+  id: string
   nome_da_startup: string
   imagem_de_capa: string
   descricao: string
   vertical: string
   localizacao: string
   cresimento_mom?: number
+  isFavorited: boolean
+  onToggleFavorite?: (id: string) => void
   onClickSaibaMais: () => void
 }
 
 export default function StartupCard({
+  id,
   nome_da_startup,
   imagem_de_capa,
   descricao,
@@ -22,40 +24,58 @@ export default function StartupCard({
   localizacao,
   cresimento_mom,
   onClickSaibaMais,
+  isFavorited,
+  onToggleFavorite,
 }: StartupCardProps) {
   return (
-    <div className={styles.card}>
-      <div className={styles["image-container"]}>
-        <img
-          src={imagem_de_capa || "/placeholder.svg?height=160&width=300&query=startup-cover-image"}
-          alt={`Imagem de capa da startup ${nome_da_startup}`}
-          className={styles.image}
+    <div className={styles["card-wrapper"]}>
+      <button
+        className={styles["external-favorite-button"]}
+        onClick={(e) => {
+          e.stopPropagation()
+          onToggleFavorite?.(id)
+        }}
+      >
+        <Heart
+          size={16}
+          fill={isFavorited ? "#ef4444" : "#d1d5db"}
+          color={isFavorited ? "#ef4444" : "#d1d5db"}
         />
-        {cresimento_mom !== undefined && (
-          <div className={styles["growth-badge"]}>
-            <LineChart size={14} />
-            <span>{`+${(cresimento_mom * 100).toFixed(1)}%`}</span>
-          </div>
-        )}
-      </div>
+      </button>
 
-      <div className={styles.content}>
-        <div className={styles["header-content"]}>
-          <h2 className={styles.nome}>{nome_da_startup}</h2>
-          <span className={styles["vertical-tag"]}>{vertical}</span>
+      <div className={styles.card}>
+        <div className={styles["image-container"]}>
+          <img
+            src={imagem_de_capa || "/placeholder.svg?height=160&width=300&query=startup-cover-image"}
+            alt={`Imagem de capa da startup ${nome_da_startup}`}
+            className={styles.image}
+          />
+          {cresimento_mom !== undefined && (
+            <div className={styles["growth-badge"]}>
+              <LineChart size={14} />
+              <span>{`+${(cresimento_mom * 100).toFixed(1)}%`}</span>
+            </div>
+          )}
         </div>
 
-        <p className={styles.description}>{descricao}</p>
-
-        <div className={styles["footer-row"]}>
-          <div className={styles["location-container"]}>
-            <MapPin size={16} className={styles["location-icon"]} />
-            <p className={styles["location-text"]}>{localizacao}</p>
+        <div className={styles.content}>
+          <div className={styles["header-content"]}>
+            <h2 className={styles.nome}>{nome_da_startup}</h2>
+            <span className={styles["vertical-tag"]}>{vertical}</span>
           </div>
 
-          <button onClick={onClickSaibaMais} className={styles.button}>
-            Saiba mais
-          </button>
+          <p className={styles.description}>{descricao}</p>
+
+          <div className={styles["footer-row"]}>
+            <div className={styles["location-container"]}>
+              <MapPin size={16} className={styles["location-icon"]} />
+              <p className={styles["location-text"]}>{localizacao}</p>
+            </div>
+
+            <button onClick={onClickSaibaMais} className={styles.button}>
+              Saiba mais
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -16,6 +16,7 @@ export default function Home() {
   const [vertical, setVertical] = useState("")
   const [localizacao, setLocalizacao] = useState("")
   const [currentPage, setCurrentPage] = useState(1)
+  const [favoritos, setFavoritos] = useState<string[]>([])
 
   const itemsPerPage = 10
 
@@ -31,6 +32,24 @@ export default function Home() {
 
     fetchData()
   }, [])
+
+  useEffect(() => {
+    const stored = localStorage.getItem("favoritos")
+    if (stored) {
+      setFavoritos(JSON.parse(stored))
+    }
+  }, [])
+
+  function toggleFavorite(id: string) {
+    setFavoritos((prev) => {
+      const updated = prev.includes(id)
+        ? prev.filter((item) => item !== id)
+        : [...prev, id]
+
+      localStorage.setItem("favoritos", JSON.stringify(updated))
+      return updated
+    })
+  }
 
   if (error) return <p>Erro: {error}</p>
   if (!data.length) return <Loading />
@@ -72,7 +91,6 @@ export default function Home() {
           localizacaoOptions={localizacaoOptions}
         />
 
-        {/* MOSTRAR MENSAGEM SE NENHUM RESULTADO */}
         {filtered.length === 0 ? (
           <p style={{ marginTop: "40px", fontSize: "18px", textAlign: "center", color: "#6b7280" }}>
             Nenhuma startup encontrada com esses filtros.
@@ -80,7 +98,7 @@ export default function Home() {
         ) : (
           <>
             <div
-              id="startup-cards" // Adicionando o id para rolar até aqui
+              id="startup-cards"
               style={{
                 display: "grid",
                 gap: "24px",
@@ -90,15 +108,19 @@ export default function Home() {
               {currentItems.map((startup) => (
                 <StartupCard
                   key={startup.id}
+                  id={String(startup.id)}
                   nome_da_startup={startup.nome_da_startup}
                   imagem_de_capa={startup.imagem_de_capa}
                   descricao={startup.descricao}
                   vertical={startup.vertical}
                   localizacao={startup.localizacao}
                   cresimento_mom={startup.cresimento_mom}
+                  isFavorited={favoritos.includes(String(startup.id))}
+                  onToggleFavorite={toggleFavorite}
                   onClickSaibaMais={() => setSelected(startup)}
                 />
               ))}
+
             </div>
 
             <div style={{ marginTop: "32px", display: "flex", justifyContent: "center", gap: "12px" }}>
