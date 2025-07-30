@@ -49,19 +49,20 @@ export default function Header() {
     <header className={styles.header}>
       <div className={styles.topbar}>
         <Link href="/" className={styles.logo} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <FaChartLine size={20} />
+          <FaChartLine size={20} style={{ color: "#0ea5e9" }} />
           <span>Investidores.vc</span>
         </Link>
+
 
         <div className={styles.actions}>
           {isLoggedIn && (
             <Link href="/dashboard">
-              <button className={styles.textButton}>Dashboard</button>
+              <button className={styles.secondaryButton}>Dashboard</button>
             </Link>
           )}
 
           {isLoggedIn ? (
-            <button onClick={handleLogout} className={styles.textButton}>Logout</button>
+            <button onClick={handleLogout} className={styles.primaryButton}>Logout</button>
           ) : (
             <>
               <Link href="/login">
@@ -75,6 +76,7 @@ export default function Header() {
             {theme === "light" ? <FaMoon size={18} /> : <FaSun size={18} />}
           </button>
         </div>
+
       </div>
 
       <div className={styles.hero}>
@@ -107,13 +109,18 @@ export default function Header() {
       </div>
 
       {showModal && (
-        <div className={styles.modalOverlay}>
+        <div className={styles.modalOverlay} data-show="true">
           <div className={styles.modal}>
-            <p className={styles.modalText}>Oi, fundador, você precisa estar logado para criar uma startup.</p>
-            <button onClick={() => setShowModal(false)} className={styles.modalButton}>Fechar</button>
+            <p className={styles.modalText}>
+              Oi, fundador, você precisa estar logado para criar uma startup.
+            </p>
+            <button onClick={() => setShowModal(false)} className={styles.modalButton}>
+              Fechar
+            </button>
           </div>
         </div>
       )}
+
     </header>
   )
 }
