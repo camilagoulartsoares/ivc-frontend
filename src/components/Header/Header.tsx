@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import styles from "./Header.module.css"
+import { FaChartLine } from "react-icons/fa"
 
 export default function Header() {
   const router = useRouter()
@@ -31,8 +32,9 @@ export default function Header() {
   return (
     <header className={styles.header}>
       <div className={styles.topbar}>
-        <Link href="#" className={styles.logo}>
-          Startup<span className={styles.logoGray}>Invest</span>
+        <Link href="/" className={styles.logo} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <FaChartLine size={20} />
+          <span>Investidores.vc</span>
         </Link>
 
         <div className={styles.actions}>
@@ -40,7 +42,9 @@ export default function Header() {
             <button onClick={handleLogout} className={styles.textButton}>Logout</button>
           ) : (
             <>
-              <Link href="/login" className={styles.textButton}>Entrar</Link>
+              <Link href="/login">
+                <button className={styles.secondaryButton}>Entrar</button>
+              </Link>
               <Link href="/register" className={styles.primaryButton}>Cadastrar</Link>
             </>
           )}
