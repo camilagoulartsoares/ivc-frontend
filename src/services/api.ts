@@ -1,5 +1,5 @@
 import axios from "axios"
 
 export const api = axios.create({
-  baseURL: "https://ivc-backend.onrender.com/",
+  baseURL: "https://backend-production-e7e3.up.railway.app/",
 })

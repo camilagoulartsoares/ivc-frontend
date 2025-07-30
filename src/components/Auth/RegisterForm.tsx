@@ -3,7 +3,15 @@ import { useRouter } from "next/router"
 import { toast } from "react-toastify"
 import { api } from "@/services/api"
 import AuthLayout from "./AuthLayout"
+import { z } from "zod"
 import React from "react"
+
+const registerSchema = z.object({
+  name: z.string().min(1, "Nome é obrigatório"),
+  email: z.string().min(1, "E-mail é obrigatório").email("E-mail inválido"),
+  password: z.string().min(6, "A senha precisa ter no mínimo 6 caracteres"),
+})
+
 export default function RegisterForm() {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
@@ -11,6 +19,14 @@ export default function RegisterForm() {
   const router = useRouter()
 
   async function handleRegister() {
+    const result = registerSchema.safeParse({ name, email, password })
+
+    if (!result.success) {
+      const firstError = result.error.issues[0].message
+      toast.error(firstError)
+      return
+    }
+
     try {
       const response = await api.post("/auth/register", { name, email, password })
       localStorage.setItem("token", response.data.token)

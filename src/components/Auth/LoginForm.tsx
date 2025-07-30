@@ -3,7 +3,13 @@ import { useRouter } from "next/router"
 import { toast } from "react-toastify"
 import { api } from "@/services/api"
 import AuthLayout from "./AuthLayout"
+import { z } from "zod"
 import React from "react"
+
+const loginSchema = z.object({
+  email: z.string().min(1, "E-mail é obrigatório").email("E-mail inválido"),
+  password: z.string().min(1, "Senha é obrigatória"),
+})
 
 export default function LoginForm() {
   const [email, setEmail] = useState("")
@@ -11,6 +17,14 @@ export default function LoginForm() {
   const router = useRouter()
 
   async function handleLogin() {
+    const result = loginSchema.safeParse({ email, password })
+
+    if (!result.success) {
+      const firstError = result.error.issues[0].message
+      toast.error(firstError)
+      return
+    }
+
     try {
       const response = await api.post("/auth/login", { email, password })
       localStorage.setItem("token", response.data.token)
