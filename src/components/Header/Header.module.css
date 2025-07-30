@@ -154,3 +154,75 @@
 .logoutButton:hover {
   background-color: #f3f4f6;
 }
+[data-theme="dark"] .header {
+  background: linear-gradient(to bottom, #111827, #1f2937);
+  border-bottom: 1px solid #374151;
+}
+
+[data-theme="dark"] .logo {
+  color: #f3f4f6;
+}
+
+[data-theme="dark"] .textButton {
+  color: #f3f4f6;
+}
+
+[data-theme="dark"] .textButton:hover {
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .primaryButton {
+  background-color: #f3f4f6;
+  color: #000000;
+}
+
+[data-theme="dark"] .primaryButton:hover {
+  background-color: #e5e7eb;
+}
+
+[data-theme="dark"] .secondaryButton {
+  background-color: #1f2937;
+  color: #f3f4f6;
+  border-color: #374151;
+}
+
+[data-theme="dark"] .secondaryButton:hover {
+  background-color: #374151;
+}
+
+[data-theme="dark"] .description {
+  color: #d1d5db;
+}
+
+[data-theme="dark"] .modal {
+  background: #1f2937;
+  color: #f3f4f6;
+}
+
+[data-theme="dark"] .modalButton {
+  background: #f3f4f6;
+  color: #000000;
+}
+.iconButton {
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconButton:hover {
+  background-color: #f3f4f6;
+}
+
+[data-theme="dark"] .iconButton {
+  border-color: #374151;
+}
+
+[data-theme="dark"] .iconButton:hover {
+  background-color: #374151;
+}

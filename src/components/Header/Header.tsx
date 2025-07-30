@@ -2,17 +2,33 @@ import React, { useEffect, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import styles from "./Header.module.css"
-import { FaChartLine } from "react-icons/fa"
+import { FaChartLine, FaMoon, FaSun } from "react-icons/fa"
 
 export default function Header() {
   const router = useRouter()
   const [showModal, setShowModal] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [theme, setTheme] = useState<"light" | "dark">("light")
 
   useEffect(() => {
     const token = localStorage.getItem("token")
     setIsLoggedIn(!!token)
   }, [])
+
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme") as "light" | "dark" | null
+    if (storedTheme) {
+      setTheme(storedTheme)
+      document.documentElement.setAttribute("data-theme", storedTheme)
+    }
+  }, [])
+
+  function toggleTheme() {
+    const newTheme = theme === "light" ? "dark" : "light"
+    setTheme(newTheme)
+    localStorage.setItem("theme", newTheme)
+    document.documentElement.setAttribute("data-theme", newTheme)
+  }
 
   function handleCreateStartupClick() {
     const token = localStorage.getItem("token")
@@ -48,6 +64,10 @@ export default function Header() {
               <Link href="/register" className={styles.primaryButton}>Cadastrar</Link>
             </>
           )}
+
+          <button onClick={toggleTheme} className={styles.iconButton}>
+            {theme === "light" ? <FaMoon size={18} /> : <FaSun size={18} />}
+          </button>
         </div>
       </div>
 

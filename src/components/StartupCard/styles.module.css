@@ -200,3 +200,57 @@
 .icon-circle-button:hover {
   background-color: #f3f4f6;
 }
+[data-theme="dark"] .card {
+  background: #1f1f1f;
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .nome {
+  color: #f3f4f6;
+}
+
+[data-theme="dark"] .description {
+  color: #d1d5db;
+}
+
+[data-theme="dark"] .vertical-tag {
+  background-color: #374151;
+  color: #f3f4f6;
+}
+
+[data-theme="dark"] .location-text {
+  color: #d1d5db;
+}
+
+[data-theme="dark"] .location-icon {
+  color: #d1d5db;
+}
+
+[data-theme="dark"] .icon-button,
+[data-theme="dark"] .icon-circle-button {
+  background-color: #2d2d2d;
+  border-color: #444;
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .icon-circle-button:hover {
+  background-color: #3a3a3a;
+}
+
+[data-theme="dark"] .button {
+  background-color: #065f46;
+  color: #d1fae5;
+}
+
+[data-theme="dark"] .button:hover {
+  background-color: #047857;
+}
+
+[data-theme="dark"] .growth-badge {
+  background-color: #065f46;
+  color: #d1fae5;
+}
+
+[data-theme="dark"] .image {
+  background-color: #2f2f2f;
+}

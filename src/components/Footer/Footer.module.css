@@ -86,3 +86,22 @@
   border-top: 1px solid #e5e7eb;
   padding-top: 1rem;
 }
+
+[data-theme="dark"] .footer {
+  background-color: #1f1f1f;
+  color: #f3f4f6;
+  border-top: 1px solid #374151;
+}
+
+[data-theme="dark"] .description,
+[data-theme="dark"] .link,
+[data-theme="dark"] .contact,
+[data-theme="dark"] .bottom,
+[data-theme="dark"] .socialLink {
+  color: #d1d5db;
+}
+
+[data-theme="dark"] .link:hover,
+[data-theme="dark"] .socialLink:hover {
+  color: #ffffff;
+}

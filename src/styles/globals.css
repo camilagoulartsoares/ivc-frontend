@@ -5,13 +5,11 @@
   --foreground-dark-bg: #ededed;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #f3f1f1;
-    --foreground: #000000;
-    --foreground-light-bg: #171717;
-    --foreground-dark-bg: #ededed;
-  }
+[data-theme="dark"] {
+  --background: #171717;
+  --foreground: #f3f1f1;
+  --foreground-light-bg: #ededed;
+  --foreground-dark-bg: #171717;
 }
 
 html,
@@ -24,10 +22,11 @@ body {
 }
 
 body {
-  color: var(--foreground);
   background: var(--background);
+  color: var(--foreground);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background 0.3s, color 0.3s;
 }
 
 * {
@@ -46,8 +45,8 @@ a {
   color: var(--foreground-light-bg);
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+/* Exemplo de card escuro (se quiser aplicar diferente no dark mode) */
+[data-theme="dark"] .card {
+  background: #2c2c2c;
+  color: var(--foreground-dark-bg);
 }
