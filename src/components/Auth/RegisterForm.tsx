@@ -1,9 +1,9 @@
-import React, { useState } from "react"
-import { api } from "@/services/api"
+import { useState } from "react"
 import { useRouter } from "next/router"
 import { toast } from "react-toastify"
-import "./AuthForm.css"
-
+import { api } from "@/services/api"
+import AuthLayout from "./AuthLayout"
+import React from "react"
 export default function RegisterForm() {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
@@ -13,12 +13,9 @@ export default function RegisterForm() {
   async function handleRegister() {
     try {
       const response = await api.post("/auth/register", { name, email, password })
-      const token = response.data.token
-      localStorage.setItem("token", token)
+      localStorage.setItem("token", response.data.token)
       toast.success("Cadastro realizado com sucesso!")
-      setTimeout(() => {
-        router.push("/")
-      }, 1000)
+      setTimeout(() => router.push("/"), 1000)
     } catch (err: any) {
       const message = err.response?.data?.message || "Erro ao cadastrar"
       toast.error(message)
@@ -26,30 +23,33 @@ export default function RegisterForm() {
   }
 
   return (
-    <div className="auth-container">
-      <h2 className="auth-title">Cadastrar</h2>
+    <AuthLayout
+      title="Criar Conta"
+      subtitle="Preencha os dados para se cadastrar"
+      footerText={<span>Já tem conta? <a href="/login" className="link">Entrar</a></span>}
+    >
       <input
-        className="auth-input"
+        className="input"
         type="text"
         placeholder="Nome"
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
       <input
-        className="auth-input"
+        className="input"
         type="email"
         placeholder="E-mail"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
       <input
-        className="auth-input"
+        className="input"
         type="password"
         placeholder="Senha"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button className="auth-button" onClick={handleRegister}>Cadastrar</button>
-    </div>
+      <button className="button" onClick={handleRegister}>Cadastrar</button>
+    </AuthLayout>
   )
 }

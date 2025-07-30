@@ -1,13 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap');
 
 .login-wrapper {
   display: flex;
   height: 100vh;
   background: #f9fafb;
+  font-family: 'Inter', sans-serif;
 }
 
 .login-form-container {
-  flex: 1;
+  flex: 1.2;
   padding: 60px;
   display: flex;
   flex-direction: column;
@@ -103,50 +105,90 @@
   align-items: center;
   justify-content: center;
   padding: 60px;
+  position: relative;
 }
 
 .banner-content {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 32px;
-  max-width: 400px;
+  align-items: center;
+  padding-top: 40px;
+  height: 100%;
+  width: 100%;
+  max-width: 1000px;
+  position: relative;
+  z-index: 1;
 }
 
 .banner-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 36px;
-  font-weight: 600;
-  line-height: 1.2;
-  color: #f1f5f9;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: #f8fafc;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 3px solid #f8fafc;
+  width: 0;
+  animation: typing 3s steps(40, end) forwards, blink 0.7s step-end infinite;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+.banner-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 60px;
+  margin-top: 40px;
 }
 
 .banner-subtitle {
   font-size: 16px;
   color: #cbd5e1;
+  line-height: 1.6;
+  max-width: 500px;
+  text-align: left;
 }
 
 .cards {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  position: static;
 }
 
 .card {
   border-radius: 20px;
   padding: 24px;
-  width: 260px;
+  width: 280px;
   font-family: 'Inter', sans-serif;
 }
 
-/* ✅ Cartão de crédito verde com contraste */
 .credit-card {
-  background-color: #059669;
+  background: linear-gradient(135deg, #059669, #10b981);
   color: white;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  gap: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
 }
 
 .card-logo {
@@ -154,14 +196,23 @@
   color: white;
 }
 
+.credit-chip {
+  width: 40px;
+  height: 28px;
+  background: gold;
+  border-radius: 6px;
+  margin-top: 8px;
+}
+
 .credit-balance {
-  font-size: 20px;
-  font-weight: 600;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 1px;
   color: white;
 }
 
 .credit-subtitle {
-  font-size: 14px;
+  font-size: 13px;
   color: #e2e8f0;
   margin-top: -10px;
 }
@@ -184,8 +235,9 @@
 }
 
 .credit-number {
-  font-size: 13px;
+  font-size: 14px;
   color: #f1f5f9;
+  letter-spacing: 2px;
 }
 
 .credit-amount {
@@ -210,10 +262,31 @@
 .credit-button {
   background-color: #f1f5f9;
   border: none;
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: 8px;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   color: #059669;
   cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.credit-button:hover {
+  background-color: #e2e8f0;
+}
+
+@media (max-width: 768px) {
+  .login-wrapper {
+    flex-direction: column;
+  }
+
+  .login-banner {
+    display: none;
+  }
+
+  .login-form-container {
+    max-width: 100%;
+    width: 100%;
+    padding: 40px 24px;
+  }
 }
