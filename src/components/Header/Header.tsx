@@ -35,7 +35,7 @@ export default function Header() {
     if (!token) {
       setShowModal(true)
     } else {
-      router.push("/startups/cadastrar")
+      router.push("/startups/cadastrar?from=home")
     }
   }
 

@@ -11,9 +11,11 @@ import {
   verticalListSortingStrategy
 } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
+import { api } from "@/services/api"
 import { apiPublic } from "@/services/apiPublic"
 import { Startup } from "@/types/Startup"
 import styles from "./DashboardTrello.module.css"
+import { useRouter } from "next/router"
 
 type ColumnId = "para_estudar" | "em_analise" | "due_diligence" | "investido" | "rejeitado"
 
@@ -44,11 +46,12 @@ function SortableCard({ item }: { item: Startup }) {
 
   return (
     <div ref={setNodeRef} className={styles.card} style={style} {...attributes} {...listeners}>
-      <img src={item.imagem_de_capa} alt="Capa" className={styles.cover} />
+      <div className={styles.avatarWrapper}>
+        <img src={item.imagem_de_capa} alt="Avatar" className={styles.avatar} />
+      </div>
       <strong className={styles.title}>{item.nome_da_startup}</strong>
       <p className={styles.description}>{item.descricao}</p>
-<span className={styles.tag}>{item.vertical}</span>
-
+      <span className={styles.tag}>{item.vertical}</span>
     </div>
   )
 }
@@ -62,21 +65,51 @@ export default function PainelTrello() {
     rejeitado: []
   })
 
-  useEffect(() => {
-    async function fetchData() {
-      const res = await apiPublic.get<Startup[]>("/03ac72cf-2cf2-40d2-86ac-be411e3be742/startups")
-      const startups = res.data.map((s) => ({ ...s, id: String(s.id) }))
+  const [isClient, setIsClient] = useState(false)
+  const router = useRouter()
 
-      setColumns({
-        para_estudar: startups.slice(0, 2),
-        em_analise: startups.slice(2, 3),
-        due_diligence: startups.slice(3, 4),
-        investido: startups.slice(4, 5),
-        rejeitado: startups.slice(5, 6)
-      })
+  useEffect(() => {
+    setIsClient(true)
+
+    async function fetchData() {
+      try {
+        const resPublic = await apiPublic.get<Startup[]>("/03ac72cf-2cf2-40d2-86ac-be411e3be742/startups")
+        const publicas = resPublic.data.map((s) => ({ ...s, id: String(s.id) }))
+
+        let privadas: Startup[] = []
+        const token = localStorage.getItem("token")
+        if (token) {
+          try {
+            const resPrivadas = await api.get<Startup[]>("/startup", {
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            })
+            privadas = resPrivadas.data.map((s) => ({
+              ...s,
+              id: String(s.id)
+            }))
+          } catch (err) {
+            console.warn("Erro ao buscar startups privadas:", err)
+          }
+        }
+
+        const todas = [...publicas, ...privadas]
+
+        setColumns({
+          para_estudar: todas,
+          em_analise: [],
+          due_diligence: [],
+          investido: [],
+          rejeitado: []
+        })
+      } catch (error) {
+        console.error("Erro ao carregar startups:", error)
+      }
     }
+
     fetchData()
-  }, [])
+  }, [router.asPath]) // Atualiza ao voltar do cadastro
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event
@@ -109,21 +142,32 @@ export default function PainelTrello() {
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.header}>Painel de Organização de Startups</h2>
+      <div className={styles.headerRow}>
+        <h2 className={styles.header}>Painel de Organização de Startups</h2>
+        <div style={{ display: "flex", gap: "1rem" }}>
+          <a href="/" className={styles.backButton}>Voltar ao Início</a>
+          <a href="/startups/cadastrar" className={styles.createButton}>+ Cadastrar Startup</a>
+        </div>
+      </div>
+
       <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <div className={styles.board}>
           {(Object.keys(COLUMN_LABELS) as ColumnId[]).map((colId) => (
             <DroppableColumn key={colId} id={colId}>
               <h3 className={styles.columnTitle}>{COLUMN_LABELS[colId]}</h3>
-              <SortableContext
-                id={colId}
-                items={columns[colId].map((s) => s.id)}
-                strategy={verticalListSortingStrategy}
-              >
-                {columns[colId].map((s) => (
-                  <SortableCard key={s.id} item={s} />
-                ))}
-              </SortableContext>
+              <div className={styles.cardList}>
+                {isClient && (
+                  <SortableContext
+                    id={colId}
+                    items={columns[colId].map((s) => s.id)}
+                    strategy={verticalListSortingStrategy}
+                  >
+                    {columns[colId].map((s) => (
+                      <SortableCard key={s.id} item={s} />
+                    ))}
+                  </SortableContext>
+                )}
+              </div>
             </DroppableColumn>
           ))}
         </div>
