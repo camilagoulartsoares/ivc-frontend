@@ -1,46 +1,219 @@
-.auth-container {
-  max-width: 400px;
-  margin: 60px auto;
-  padding: 30px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #fafafa;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&display=swap');
+
+.login-wrapper {
+  display: flex;
+  height: 100vh;
+  background: #f9fafb;
 }
 
-.auth-title {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 24px;
+.login-form-container {
+  flex: 1;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: white;
+  max-width: 500px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.03);
 }
 
-.auth-input {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+.icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  background: linear-gradient(90deg, #34d399, #2563eb);
+}
+
+.icon-container svg {
+  width: 28px;
+  height: 28px;
+  color: white;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 6px;
+}
+
+.subtitle {
   font-size: 16px;
-  box-sizing: border-box;
+  color: #6b7280;
+  margin-bottom: 24px;
 }
 
-.auth-input:focus {
-  border-color: #0070f3;
+.input {
+  background-color: #f1f5f9;
+  padding: 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 15px;
+  margin-bottom: 16px;
+  transition: border 0.3s ease;
+}
+
+.input:focus {
+  border-color: #3b82f6;
   outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
-.auth-button {
-  width: 100%;
-  padding: 12px;
-  background-color: #0070f3;
+.button {
+  background: #059669;
   color: white;
   border: none;
-  border-radius: 6px;
+  padding: 14px;
   font-size: 16px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
 }
 
-.auth-button:hover {
-  background-color: #0059c1;
+.button:hover {
+  background: #10b981;
+}
+
+.footer-text {
+  margin-top: 24px;
+  font-size: 14px;
+  text-align: center;
+  color: #6b7280;
+}
+
+.link {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.login-banner {
+  flex: 1;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+}
+
+.banner-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 32px;
+  max-width: 400px;
+}
+
+.banner-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #f1f5f9;
+}
+
+.banner-subtitle {
+  font-size: 16px;
+  color: #cbd5e1;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  border-radius: 20px;
+  padding: 24px;
+  width: 260px;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ✅ Cartão de crédito verde com contraste */
+.credit-card {
+  background-color: #059669;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+.card-logo {
+  font-size: 28px;
+  color: white;
+}
+
+.credit-balance {
+  font-size: 20px;
+  font-weight: 600;
+  color: white;
+}
+
+.credit-subtitle {
+  font-size: 14px;
+  color: #e2e8f0;
+  margin-top: -10px;
+}
+
+.credit-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.credit-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.credit-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+}
+
+.credit-number {
+  font-size: 13px;
+  color: #f1f5f9;
+}
+
+.credit-amount {
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+}
+
+.credit-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.credit-brand {
+  font-weight: 600;
+  color: #f1f5f9;
+  font-size: 14px;
+}
+
+.credit-button {
+  background-color: #f1f5f9;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #059669;
+  cursor: pointer;
 }
