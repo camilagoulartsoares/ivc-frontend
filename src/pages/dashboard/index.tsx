@@ -11,8 +11,8 @@ import {
   verticalListSortingStrategy
 } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
-import { Startup } from "@/types/Startup"
 import { apiPublic } from "@/services/apiPublic"
+import { Startup } from "@/types/Startup"
 import styles from "./DashboardTrello.module.css"
 
 type ColumnId = "para_estudar" | "em_analise" | "due_diligence" | "investido" | "rejeitado"
@@ -36,6 +36,7 @@ function DroppableColumn({ id, children }: { id: string; children: React.ReactNo
 
 function SortableCard({ item }: { item: Startup }) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: item.id })
+
   const style = {
     transform: CSS.Transform.toString(transform),
     transition
@@ -43,8 +44,11 @@ function SortableCard({ item }: { item: Startup }) {
 
   return (
     <div ref={setNodeRef} className={styles.card} style={style} {...attributes} {...listeners}>
-      <strong>{item.nome_da_startup}</strong>
-      <span className={styles.details}>{item.descricao}</span>
+      <img src={item.imagem_de_capa} alt="Capa" className={styles.cover} />
+      <strong className={styles.title}>{item.nome_da_startup}</strong>
+      <p className={styles.description}>{item.descricao}</p>
+<span className={styles.tag}>{item.vertical}</span>
+
     </div>
   )
 }
@@ -60,9 +64,7 @@ export default function PainelTrello() {
 
   useEffect(() => {
     async function fetchData() {
-      const res = await apiPublic.get<Startup[]>(
-        "/03ac72cf-2cf2-40d2-86ac-be411e3be742/startups"
-      )
+      const res = await apiPublic.get<Startup[]>("/03ac72cf-2cf2-40d2-86ac-be411e3be742/startups")
       const startups = res.data.map((s) => ({ ...s, id: String(s.id) }))
 
       setColumns({
@@ -73,7 +75,6 @@ export default function PainelTrello() {
         rejeitado: startups.slice(5, 6)
       })
     }
-
     fetchData()
   }, [])
 
@@ -108,8 +109,7 @@ export default function PainelTrello() {
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>Painel de Organização de Startups</h2>
-
+      <h2 className={styles.header}>Painel de Organização de Startups</h2>
       <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <div className={styles.board}>
           {(Object.keys(COLUMN_LABELS) as ColumnId[]).map((colId) => (

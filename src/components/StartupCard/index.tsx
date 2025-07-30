@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import styles from "./styles.module.css"
 import { MapPin, LineChart, Heart, Pencil, Trash2 } from "lucide-react"
 import { useRouter } from "next/navigation"
@@ -33,6 +33,7 @@ export default function StartupCard({
   isMinha,
 }: StartupCardProps) {
   const router = useRouter()
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
 
   async function handleDelete() {
     try {
@@ -84,7 +85,7 @@ export default function StartupCard({
               className={styles["icon-circle-button"]}
               onClick={(e) => {
                 e.stopPropagation()
-                handleDelete()
+                setShowDeleteModal(true)
               }}
             >
               <Trash2 size={14} color="#6b7280" />
@@ -133,6 +134,32 @@ export default function StartupCard({
           </div>
         </div>
       </div>
+
+      {showDeleteModal && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <p className={styles.modalText}>Tem certeza que deseja excluir essa startup?</p>
+            <div style={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className={styles.modalButton}
+                style={{ backgroundColor: "#6b7280" }}
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={() => {
+                  handleDelete()
+                  setShowDeleteModal(false)
+                }}
+                className={styles.modalButton}
+              >
+                Confirmar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

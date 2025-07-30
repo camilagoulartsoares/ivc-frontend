@@ -1,14 +1,14 @@
 .container {
   padding: 32px;
-  background: #f9fafb;
+  background-color: #ccc7c7;
   min-height: 100vh;
 }
 
-.title {
+.header {
   font-size: 24px;
   font-weight: 700;
-  margin-bottom: 24px;
   color: #111827;
+  margin-bottom: 24px;
 }
 
 .board {
@@ -21,9 +21,10 @@
   background-color: #ffffff;
   border-radius: 12px;
   padding: 16px;
+  width: 280px;
   min-height: 400px;
-  width: 260px;
-  box-shadow: 0 0 0 1px #e5e7eb;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
 }
 
 .columnTitle {
@@ -34,31 +35,58 @@
 }
 
 .card {
-  background-color: #f9fafb;
+  background-color: #ffffff;
   border-radius: 8px;
   padding: 12px;
   margin-bottom: 12px;
+  border: 1px solid #e5e7eb;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   cursor: grab;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: box-shadow 0.2s ease;
 }
 
-.details {
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #d1d5db;
+}
+
+.title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.description {
   font-size: 14px;
   color: #4b5563;
-  display: block;
-  margin-top: 4px;
+  margin: 0;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .tag {
-  margin-top: 8px;
   font-size: 12px;
   background-color: #e5e7eb;
   color: #374151;
   padding: 2px 8px;
   border-radius: 9999px;
-  display: inline-block;
   width: fit-content;
 }

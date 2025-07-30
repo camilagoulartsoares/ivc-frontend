@@ -254,3 +254,42 @@
 [data-theme="dark"] .image {
   background-color: #2f2f2f;
 }
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 400px;
+  text-align: center;
+}
+
+.modalText {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.modalButton {
+  background: black;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.modalButton:hover {
+  background: #111;
+}
