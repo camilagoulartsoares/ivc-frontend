@@ -1,21 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Overpass+Mono:wght@400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Mr+Dafoe&display=swap");
 
 .login-wrapper {
   display: flex;
   height: 100vh;
   background: #f9fafb;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .login-form-container {
-  flex: 1.2;
+  flex: 1;
   padding: 60px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   background-color: white;
-  max-width: 500px;
+  max-width: none;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.03);
 }
 
@@ -98,14 +100,21 @@
 }
 
 .login-banner {
-  flex: 1;
+  flex: 2;
   background: linear-gradient(135deg, #0f172a, #1e293b);
   color: white;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 60px;
   position: relative;
+  overflow: hidden;
+}
+
+.login-banner::before,
+.login-banner::after {
+  content: none;
 }
 
 .banner-content {
@@ -121,19 +130,19 @@
 }
 
 .banner-title {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: "Cormorant Garamond", serif;
   font-size: 40px;
   font-weight: 500;
   line-height: 1.3;
   color: #f8fafc;
-  overflow: hidden;
-  white-space: nowrap;
-  border-right: 3px solid #f8fafc;
-  width: 0;
-  animation: typing 3s steps(40, end) forwards, blink 0.7s step-end infinite;
+  white-space: normal;
+  border: none;
+  width: auto;
   text-align: center;
   margin-bottom: 40px;
+  text-shadow: none;
 }
+
 
 @keyframes typing {
   from {
@@ -154,125 +163,288 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
   gap: 60px;
-  margin-top: 40px;
+  width: 100%;
+  margin-top: 60px;
 }
 
 .banner-subtitle {
-  font-size: 16px;
+  font-size: 20px;
   color: #cbd5e1;
   line-height: 1.6;
-  max-width: 500px;
+  max-width: 600px; /* ajuste esse valor até ficar alinhado com a borda do cartão */
   text-align: left;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  display: block;
 }
 
 .cards {
-  position: static;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  width: 100%;
+  margin-top: 160px; /* aumente conforme necessário */
+  padding-right: 60px;
 }
+
 
 .card {
-  border-radius: 20px;
-  padding: 24px;
-  width: 280px;
-  font-family: 'Inter', sans-serif;
+  width: 320px;
+  height: 200px;
+  border-radius: 10px;
+  perspective: 1000px;
 }
 
-.credit-card {
-  background: linear-gradient(135deg, #059669, #10b981);
-  color: white;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-  border-radius: 16px;
-  padding: 24px;
+.card-inner {
   position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  transition: transform 300ms ease, box-shadow 300ms ease;
+  transform-style: preserve-3d;
+  box-shadow: 0 0 25px 2px rgba(0, 0, 0, 0.2);
+}
+
+.card:hover .card-inner {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  backface-visibility: hidden;
+  background: linear-gradient(321.03deg, #01adef 0%, #0860bf 91.45%);
+}
+
+.card-front {
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+}
+
+.card-back::before {
+  content: "";
+  position: absolute;
+  top: 40%;
+  left: 20%;
+  width: 180%;
+  height: 120%;
+  border-radius: 100%;
+  background-image: linear-gradient(
+    to right top,
+    #a3d4e7,
+    #a7d5e6,
+    #abd5e4,
+    #aed6e3,
+    #b2d6e2,
+    #aed4e2,
+    #abd3e1,
+    #a7d1e1,
+    #9bcee1,
+    #8ecae1,
+    #81c7e1,
+    #73c3e1
+  );
+  filter: blur(10px);
+  opacity: 0.15;
+}
+
+.card-back::after {
+  content: "";
+  position: absolute;
+  top: 15%;
+  width: 100%;
+  height: 40px;
+  background-image: linear-gradient(
+    to right top,
+    #021318,
+    #07191f,
+    #0a1f26,
+    #0b262e,
+    #0c2c35,
+    #0c2c35,
+    #0c2c35,
+    #0c2c35,
+    #0b262e,
+    #0a1f26,
+    #07191f,
+    #021318
+  );
+}
+
+.card-bg,
+.card-bg::before,
+.card-bg::after {
+  position: absolute;
+  top: -20px;
+  width: 380px;
+  height: 250px;
+  background: linear-gradient(321.03deg, #01adef 0%, #0860bf 91.45%);
+  border-top-left-radius: 100%;
+}
+
+.card-bg {
+  right: -120px;
+}
+.card-bg::before {
+  right: -80px;
+}
+.card-bg::after {
+  right: -120px;
+}
+
+.card-glow {
+  position: absolute;
+  top: -140px;
+  left: -65px;
+  height: 200px;
+  width: 400px;
+  background: rgba(0, 183, 255, 0.4);
+  filter: blur(10px);
+  border-radius: 100%;
+  transform: skew(-15deg, -15deg);
+}
+
+.card-contactless {
+  position: absolute;
+  right: 15px;
+  top: 55px;
+  transform: scale(0.5);
+}
+
+.card-chip {
+  position: absolute;
+  top: 65px;
+  left: 25px;
+  width: 45px;
+  height: 34px;
+  border-radius: 5px;
+  background-color: #ffda7b;
   overflow: hidden;
 }
 
-.card-logo {
-  font-size: 28px;
+.card-chip::before {
+  content: "";
+  position: absolute;
+  left: 49%;
+  top: -7%;
+  transform: translateX(-50%);
+  background: #ffda7b;
+  border: 1px solid #a27c1f;
+  width: 25%;
+  height: 110%;
+  border-radius: 100%;
+  z-index: 2;
+}
+
+.card-chip::after {
+  content: "";
+  position: absolute;
+  top: 30%;
+  left: -10%;
+  border: 1px solid #a27c1f;
+  width: 120%;
+  height: 33%;
+}
+
+.card-holder {
+  position: absolute;
+  left: 25px;
+  bottom: 30px;
   color: white;
-}
-
-.credit-chip {
-  width: 40px;
-  height: 28px;
-  background: gold;
-  border-radius: 6px;
-  margin-top: 8px;
-}
-
-.credit-balance {
-  font-size: 24px;
-  font-weight: bold;
-  letter-spacing: 1px;
-  color: white;
-}
-
-.credit-subtitle {
-  font-size: 13px;
-  color: #e2e8f0;
-  margin-top: -10px;
-}
-
-.credit-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-}
-
-.credit-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.credit-label {
-  font-size: 13px;
-  font-weight: 600;
-  color: white;
-}
-
-.credit-number {
   font-size: 14px;
-  color: #f1f5f9;
-  letter-spacing: 2px;
+  letter-spacing: 0.2em;
+  filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.3));
 }
 
-.credit-amount {
-  font-size: 14px;
-  font-weight: 600;
+.card-number {
+  position: absolute;
+  left: 25px;
+  bottom: 65px;
   color: white;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.3));
 }
 
-.credit-bottom {
+.card-valid {
+  position: absolute;
+  right: 25px;
+  bottom: 30px;
+  color: white;
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.3));
+}
+
+.card-valid::before {
+  content: "GOOD THRU";
+  position: absolute;
+  top: 1px;
+  left: -35px;
+  font-size: 7px;
+}
+
+.card-signature {
+  position: absolute;
+  top: 120px;
+  left: 15px;
+  width: 70%;
+  height: 30px;
+  background: rgb(238, 236, 236);
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  margin-top: 12px;
+  color: #021318;
+  font-family: "Mr Dafoe", cursive;
+  font-size: 38px;
 }
 
-.credit-brand {
-  font-weight: 600;
-  color: #f1f5f9;
-  font-size: 14px;
+.card-signature::before {
+  content: "Authorized Signature";
+  position: absolute;
+  top: -15px;
+  left: 0;
+  font-family: "Overpass Mono", monospace;
+  font-size: 9px;
+  color: rgb(238, 236, 236);
 }
 
-.credit-button {
-  background-color: #f1f5f9;
-  border: none;
-  padding: 6px 14px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #059669;
-  cursor: pointer;
-  transition: background 0.2s ease;
+.card-seccode {
+  position: absolute;
+  top: 125px;
+  left: 245px;
+  width: 40px;
+  height: 17px;
+  background-color: rgb(238, 236, 236);
+  color: #021318;
+  font-size: 11px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.credit-button:hover {
-  background-color: #e2e8f0;
+.logo {
+  position: absolute;
+  right: 25px;
+  top: 30px;
+}
+
+.hint {
+  display: none;
 }
 
 @media (max-width: 768px) {
@@ -289,4 +461,16 @@
     width: 100%;
     padding: 40px 24px;
   }
+}
+
+.static-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 64px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #f8fafc;
+  margin-bottom: 24px;
+  max-width: 800px;
+  white-space: normal;
+  text-align: left;
 }

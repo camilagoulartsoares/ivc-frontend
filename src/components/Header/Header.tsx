@@ -54,6 +54,12 @@ export default function Header() {
         </Link>
 
         <div className={styles.actions}>
+          {isLoggedIn && (
+            <Link href="/dashboard">
+              <button className={styles.textButton}>Dashboard</button>
+            </Link>
+          )}
+
           {isLoggedIn ? (
             <button onClick={handleLogout} className={styles.textButton}>Logout</button>
           ) : (
