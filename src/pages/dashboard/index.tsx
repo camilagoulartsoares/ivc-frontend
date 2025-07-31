@@ -17,6 +17,7 @@ import { apiPublic } from "@/services/apiPublic"
 import { Startup } from "@/types/Startup"
 import styles from "./DashboardTrello.module.css"
 import { useRouter } from "next/router"
+import SkeletonCard from "../../components/SkeletonCard/SkeletonCard"
 
 type ColumnId = "para_estudar" | "em_analise" | "due_diligence" | "investido" | "rejeitado"
 
@@ -63,7 +64,7 @@ function SortableCard({ item, activeId }: { item: Startup; activeId: string | nu
   const style = {
     transform: CSS.Transform.toString(transform),
     transition: isDragging ? "none" : transition,
-    opacity: isDragging ? 0 : 1 // invisível na coluna
+    opacity: isDragging ? 0 : 1
   }
 
   return (
@@ -81,8 +82,10 @@ export default function PainelTrello() {
     investido: [],
     rejeitado: []
   })
+
   const [isClient, setIsClient] = useState(false)
   const [activeId, setActiveId] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
   const router = useRouter()
 
   useEffect(() => {
@@ -115,6 +118,8 @@ export default function PainelTrello() {
           investido: [],
           rejeitado: []
         })
+
+        setIsLoading(false)
       } catch (error) {
         console.error("Erro ao carregar startups:", error)
       }
@@ -143,7 +148,6 @@ export default function PainelTrello() {
 
     if (!activeItem) return
 
-    // Mesma coluna: mover internamente
     if (from === to) {
       const oldList = [...columns[from]]
       const fromIndex = oldList.findIndex((s) => s.id === active.id)
@@ -193,19 +197,24 @@ export default function PainelTrello() {
             <DroppableColumn key={colId} id={colId}>
               <h3 className={styles.columnTitle}>{COLUMN_LABELS[colId]}</h3>
               <div className={styles.cardList}>
-                {isClient && columns[colId].length > 0 ? (
-                  <SortableContext
-                    id={colId}
-                    items={columns[colId].map((s) => s.id)}
-                    strategy={verticalListSortingStrategy}
-                  >
-                    {columns[colId].map((s) => (
-                      <SortableCard key={s.id} item={s} activeId={activeId} />
-                    ))}
-                  </SortableContext>
+                {isLoading && colId === "para_estudar" ? (
+                  Array.from({ length: columns.para_estudar.length || 3 }).map((_, idx) => (
+                    <SkeletonCard key={idx} />
+                  ))
                 ) : (
-                  columns[colId].map((s) => <SortableCard key={s.id} item={s} activeId={activeId} />)
+                  isClient && columns[colId].length > 0 ? (
+                    <SortableContext
+                      id={colId}
+                      items={columns[colId].map((s) => s.id)}
+                      strategy={verticalListSortingStrategy}
+                    >
+                      {columns[colId].map((s) => (
+                        <SortableCard key={s.id} item={s} activeId={activeId} />
+                      ))}
+                    </SortableContext>
+                  ) : null
                 )}
+
               </div>
             </DroppableColumn>
           ))}
