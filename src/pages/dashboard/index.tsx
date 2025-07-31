@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import {
   DndContext,
   DragEndEvent,
+  DragOverlay,
   closestCenter,
   useDroppable
 } from "@dnd-kit/core"
@@ -36,22 +37,38 @@ function DroppableColumn({ id, children }: { id: string; children: React.ReactNo
   )
 }
 
-function SortableCard({ item }: { item: Startup }) {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: item.id })
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition
-  }
-
+function CardContent({ item }: { item: Startup }) {
   return (
-    <div ref={setNodeRef} className={styles.card} style={style} {...attributes} {...listeners}>
+    <div className={styles.card}>
       <div className={styles.avatarWrapper}>
         <img src={item.imagem_de_capa} alt="Avatar" className={styles.avatar} />
       </div>
       <strong className={styles.title}>{item.nome_da_startup}</strong>
       <p className={styles.description}>{item.descricao}</p>
-      <span className={styles.tag}>{item.vertical}</span>
+      <span className={`${styles.tag} ${item.vertical}`}>{item.vertical}</span>
+    </div>
+  )
+}
+
+function SortableCard({ item, activeId }: { item: Startup; activeId: string | null }) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging
+  } = useSortable({ id: item.id })
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition: isDragging ? "none" : transition,
+    opacity: isDragging ? 0 : 1 // invisível na coluna
+  }
+
+  return (
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      <CardContent item={item} />
     </div>
   )
 }
@@ -64,8 +81,8 @@ export default function PainelTrello() {
     investido: [],
     rejeitado: []
   })
-
   const [isClient, setIsClient] = useState(false)
+  const [activeId, setActiveId] = useState<string | null>(null)
   const router = useRouter()
 
   useEffect(() => {
@@ -81,14 +98,9 @@ export default function PainelTrello() {
         if (token) {
           try {
             const resPrivadas = await api.get<Startup[]>("/startup", {
-              headers: {
-                Authorization: `Bearer ${token}`
-              }
+              headers: { Authorization: `Bearer ${token}` }
             })
-            privadas = resPrivadas.data.map((s) => ({
-              ...s,
-              id: String(s.id)
-            }))
+            privadas = resPrivadas.data.map((s) => ({ ...s, id: String(s.id) }))
           } catch (err) {
             console.warn("Erro ao buscar startups privadas:", err)
           }
@@ -109,34 +121,54 @@ export default function PainelTrello() {
     }
 
     fetchData()
-  }, [router.asPath]) // Atualiza ao voltar do cadastro
+  }, [router.asPath])
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event
+    setActiveId(null)
     if (!over || active.id === over.id) return
 
     const from = (Object.keys(columns) as ColumnId[]).find((col) =>
       columns[col].some((s) => s.id === active.id)
     )
 
-    let to = (Object.keys(columns) as ColumnId[]).find((col) => col === over.id)
+    const to = (Object.keys(columns) as ColumnId[]).find((col) =>
+      columns[col].some((s) => s.id === over.id)
+    ) || over.id as ColumnId
 
-    if (!to) {
-      const found = (Object.entries(columns) as [ColumnId, Startup[]][]).find(([_, list]) =>
-        list.some((s) => s.id === over.id)
-      )
-      to = found?.[0]
+    if (!from || !to) return
+
+    const activeItem = columns[from].find((s) => s.id === active.id)
+    const overIndex = columns[to].findIndex((s) => s.id === over.id)
+
+    if (!activeItem) return
+
+    // Mesma coluna: mover internamente
+    if (from === to) {
+      const oldList = [...columns[from]]
+      const fromIndex = oldList.findIndex((s) => s.id === active.id)
+
+      if (fromIndex !== overIndex) {
+        const updated = [...oldList]
+        const [moved] = updated.splice(fromIndex, 1)
+        updated.splice(overIndex, 0, moved)
+
+        setColumns({
+          ...columns,
+          [from]: updated
+        })
+      }
+      return
     }
 
-    if (!from || !to || from === to) return
-
-    const item = columns[from].find((s) => s.id === active.id)
-    if (!item) return
+    const updatedFrom = columns[from].filter((s) => s.id !== active.id)
+    const updatedTo = [...columns[to]]
+    updatedTo.splice(overIndex === -1 ? updatedTo.length : overIndex, 0, activeItem)
 
     setColumns({
       ...columns,
-      [from]: columns[from].filter((s) => s.id !== item.id),
-      [to]: [...columns[to], item]
+      [from]: updatedFrom,
+      [to]: updatedTo
     })
   }
 
@@ -150,27 +182,44 @@ export default function PainelTrello() {
         </div>
       </div>
 
-      <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+      <DndContext
+        collisionDetection={closestCenter}
+        onDragStart={(event) => setActiveId(String(event.active.id))}
+        onDragEnd={handleDragEnd}
+        onDragCancel={() => setActiveId(null)}
+      >
         <div className={styles.board}>
           {(Object.keys(COLUMN_LABELS) as ColumnId[]).map((colId) => (
             <DroppableColumn key={colId} id={colId}>
               <h3 className={styles.columnTitle}>{COLUMN_LABELS[colId]}</h3>
               <div className={styles.cardList}>
-                {isClient && (
+                {isClient && columns[colId].length > 0 ? (
                   <SortableContext
                     id={colId}
                     items={columns[colId].map((s) => s.id)}
                     strategy={verticalListSortingStrategy}
                   >
                     {columns[colId].map((s) => (
-                      <SortableCard key={s.id} item={s} />
+                      <SortableCard key={s.id} item={s} activeId={activeId} />
                     ))}
                   </SortableContext>
+                ) : (
+                  columns[colId].map((s) => <SortableCard key={s.id} item={s} activeId={activeId} />)
                 )}
               </div>
             </DroppableColumn>
           ))}
         </div>
+
+        <DragOverlay>
+          {activeId
+            ? (() => {
+              const allItems = Object.values(columns).flat()
+              const item = allItems.find((s) => s.id === activeId)
+              return item ? <CardContent item={item} /> : null
+            })()
+            : null}
+        </DragOverlay>
       </DndContext>
     </div>
   )
