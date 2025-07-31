@@ -1,22 +1,3 @@
-<!-- ## ✅ Testes
-
-Este projeto possui testes automatizados utilizando:
-
-- [Jest](https://jestjs.io/)
-- [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
-
-Os testes cobrem o comportamento da aplicação como:
-
-- Renderização do componente principal `<App />` com a página inicial (`Home`)
-- Execução sem erros de renderização
-- Integração futura com filtros, listagem de startups e comportamento interativo
-
-Para executar os testes localmente:
-
-```bash
-npm test -->
-
-
 # 📊 Vitrine de Startups
 
 Plataforma interativa que apresenta startups em um layout estilo vitrine (como a Netflix), com filtros dinâmicos, favoritos e funcionalidades exclusivas para usuários autenticados.
@@ -68,6 +49,15 @@ Usuários autenticados têm acesso a funcionalidades exclusivas:
 - **Criar startup**: botão acessível no header, com verificação de autenticação.
 - **Editar startup**: disponível em cards próprios do usuário.
 - **Deletar startup**: com modal de confirmação, também restrito ao dono da startup.
+
+### 💬 Chatbot com Integração Backend
+
+Usuários autenticados podem interagir com um chatbot inteligente integrado ao backend (NestJS):
+
+- Permite tirar dúvidas e buscar startups por palavras-chave.
+- Sugestões de perguntas aparecem logo no início da conversa.
+- Filtro de pesquisa com base nas mensagens digitadas.
+- Respostas dinâmicas consumidas da API em tempo real.
 
 ## 🧪 Testes
 
