@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import styles from "./Header.module.css"
+import { useTranslation } from "next-i18next"
 import { FaChartLine, FaMoon, FaSun } from "react-icons/fa"
+import styles from "./Header.module.css"
 
 export default function Header() {
   const router = useRouter()
+  const { i18n } = useTranslation()
   const [showModal, setShowModal] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [theme, setTheme] = useState<"light" | "dark">("light")
@@ -53,7 +55,6 @@ export default function Header() {
           <span>Investidores.vc</span>
         </Link>
 
-
         <div className={styles.actions}>
           {isLoggedIn && (
             <Link href="/dashboard">
@@ -72,11 +73,21 @@ export default function Header() {
             </>
           )}
 
-          <button onClick={toggleTheme} className={styles.iconButton}>
-            {theme === "light" ? <FaMoon size={18} /> : <FaSun size={18} />}
-          </button>
-        </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <button onClick={toggleTheme} className={styles.iconButton}>
+              {theme === "light" ? <FaMoon size={18} /> : <FaSun size={18} />}
+            </button>
 
+            <select
+              onChange={(e) => i18n.changeLanguage(e.target.value)}
+              value={i18n.language}
+              className={styles.languageSelect}
+            >
+              <option value="pt">🇧🇷</option>
+              <option value="en">🇺🇸</option>
+            </select>
+          </div>
+        </div>
       </div>
 
       <div className={styles.hero}>
@@ -120,7 +131,6 @@ export default function Header() {
           </div>
         </div>
       )}
-
     </header>
   )
 }
