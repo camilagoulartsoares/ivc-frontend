@@ -15,7 +15,6 @@ type RespostaBot =
   | { tipo: "nenhum_resultado"; resposta: string }
   | { tipo: "resultado"; resposta: Startup[] }
   
-
 type ChatItem =
   | { id: string; role: "user"; text: string }
   | { id: string; role: "bot"; text: string; startups?: Startup[] }
