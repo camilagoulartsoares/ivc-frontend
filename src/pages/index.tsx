@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import Head from "next/head"
 import StartupCard from "@/components/StartupCard"
 import StartupModal from "@/components/StartupModal/StartupModal"
@@ -14,10 +14,10 @@ type RespostaBot =
   | { tipo: "erro"; resposta: string }
   | { tipo: "nenhum_resultado"; resposta: string }
   | { tipo: "resultado"; resposta: Startup[] }
-  
+
 type ChatItem =
-  | { id: string; role: "user"; text: string }
-  | { id: string; role: "bot"; text: string; startups?: Startup[] }
+  | { id: string; role: "user"; text: string; ts?: number }
+  | { id: string; role: "bot"; text: string; startups?: Startup[]; ts?: number }
 
 export default function Home() {
   const [data, setData] = useState<Startup[]>([])
@@ -34,6 +34,8 @@ export default function Home() {
   const [chatInput, setChatInput] = useState("")
   const [chatLoading, setChatLoading] = useState(false)
   const [chat, setChat] = useState<ChatItem[]>([])
+  const chatListRef = useRef<HTMLDivElement | null>(null)
+  const abortRef = useRef<AbortController | null>(null)
 
   const itemsPerPage = 10
 
@@ -41,18 +43,14 @@ export default function Home() {
     async function fetchData() {
       try {
         const publicasRes = await apiPublic.get<Startup[]>("/03ac72cf-2cf2-40d2-86ac-be411e3be742/startups")
-
         let minhasResData: Startup[] = []
-
-        const token = localStorage.getItem("token")
+        const token = typeof window !== "undefined" ? localStorage.getItem("token") : null
         if (token) {
           try {
             const minhasRes = await api.get<Startup[]>("/startup")
             minhasResData = minhasRes.data
-          } catch {
-          }
+          } catch {}
         }
-
         const minhasFormatadas = minhasResData.map((s) => ({
           ...s,
           id: String(s.id),
@@ -61,7 +59,6 @@ export default function Home() {
           cresimento_mom: s.cresimento_mom || 0,
           isMinha: true
         }))
-
         const publicasFormatadas = publicasRes.data.map((s) => ({
           ...s,
           id: String(s.id),
@@ -70,42 +67,52 @@ export default function Home() {
           cresimento_mom: s.cresimento_mom || 0,
           isMinha: false
         }))
-
         const todas = [...publicasFormatadas, ...minhasFormatadas]
         setData(todas)
       } catch (err: any) {
         setError(err.message || "Erro ao carregar startups")
       }
     }
-
     fetchData()
   }, [])
 
   useEffect(() => {
-    const stored = localStorage.getItem("favoritos")
-    if (stored) {
-      setFavoritos(JSON.parse(stored))
-    }
+    const stored = typeof window !== "undefined" ? localStorage.getItem("favoritos") : null
+    if (stored) setFavoritos(JSON.parse(stored))
+    const chatStored = typeof window !== "undefined" ? localStorage.getItem("ivc_chat") : null
+    if (chatStored) setChat(JSON.parse(chatStored))
   }, [])
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("favoritos", JSON.stringify(favoritos))
+      } catch {}
+    }
+  }, [favoritos])
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("ivc_chat", JSON.stringify(chat.slice(-100)))
+      } catch {}
+    }
+  }, [chat])
+
+  useEffect(() => {
+    if (!chatListRef.current) return
+    chatListRef.current.scrollTop = chatListRef.current.scrollHeight
+  }, [chat, chatLoading, chatOpen])
 
   function toggleFavorite(id: string) {
     setFavoritos((prev) => {
-      const updated = prev.includes(id)
-        ? prev.filter((item) => item !== id)
-        : [...prev, id]
-      localStorage.setItem("favoritos", JSON.stringify(updated))
+      const updated = prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
       return updated
     })
   }
 
-  const verticalOptions = useMemo(
-    () => Array.from(new Set(data.map((s) => s.vertical))),
-    [data]
-  )
-  const localizacaoOptions = useMemo(
-    () => Array.from(new Set(data.map((s) => s.localizacao))),
-    [data]
-  )
+  const verticalOptions = useMemo(() => Array.from(new Set(data.map((s) => s.vertical))), [data])
+  const localizacaoOptions = useMemo(() => Array.from(new Set(data.map((s) => s.localizacao))), [data])
 
   const filtered = data.filter((startup) =>
     startup.nome_da_startup?.toLowerCase().includes(search.toLowerCase()) &&
@@ -125,36 +132,23 @@ export default function Home() {
   async function sendChat() {
     const text = chatInput.trim()
     if (!text || chatLoading) return
-
-    setChat((prev) => [...prev, { id: newId(), role: "user", text }])
+    setChat((prev) => [...prev, { id: newId(), role: "user", text, ts: Date.now() }])
     setChatInput("")
     setChatLoading(true)
-
     try {
-      const { data: json } = await api.get<RespostaBot>("/chatbot", {
-        params: { mensagem: text }
-      })
-
+      abortRef.current?.abort()
+      const controller = new AbortController()
+      abortRef.current = controller
+      const { data: json } = await api.get<RespostaBot>("/chatbot", { params: { mensagem: text }, signal: controller.signal })
       const botMessage: ChatItem =
         json.tipo === "resultado"
-          ? {
-              id: newId(),
-              role: "bot",
-              text: `Encontrei ${json.resposta.length} startup(s).`,
-              startups: json.resposta
-            }
-          : {
-              id: newId(),
-              role: "bot",
-              text: json.resposta
-            }
-
+          ? { id: newId(), role: "bot", text: `Encontrei ${json.resposta.length} startup(s).`, startups: json.resposta, ts: Date.now() }
+          : { id: newId(), role: "bot", text: json.resposta, ts: Date.now() }
       setChat((prev) => [...prev, botMessage])
     } catch (err: any) {
-      const message =
-        err?.response?.data?.message ||
-        "Erro ao falar com o chatbot. Tente novamente."
-      setChat((prev) => [...prev, { id: newId(), role: "bot", text: message }])
+      if (err?.name === "AbortError") return
+      const message = err?.response?.data?.message || "Erro ao falar com o chatbot. Tente novamente."
+      setChat((prev) => [...prev, { id: newId(), role: "bot", text: message, ts: Date.now() }])
     } finally {
       setChatLoading(false)
     }
@@ -212,13 +206,7 @@ export default function Home() {
                   flexDirection: "column"
                 }}
               >
-                <div
-                  style={{
-                    width: "100%",
-                    height: "160px",
-                    backgroundColor: "#e5e7eb"
-                  }}
-                />
+                <div style={{ width: "100%", height: "160px", backgroundColor: "#e5e7eb" }} />
                 <div style={{ padding: "16px", display: "flex", flexDirection: "column", gap: "12px" }}>
                   <div style={{ width: "70%", height: "16px", backgroundColor: "#e5e7eb", borderRadius: "4px" }} />
                   <div style={{ width: "100%", height: "12px", backgroundColor: "#e5e7eb", borderRadius: "4px" }} />
@@ -293,10 +281,7 @@ export default function Home() {
       </div>
 
       {selected && (
-        <StartupModal
-          startup={selected}
-          onClose={() => setSelected(null)}
-        />
+        <StartupModal startup={selected} onClose={() => setSelected(null)} />
       )}
 
       <button
@@ -345,7 +330,7 @@ export default function Home() {
             <div style={{ fontSize: 12, color: "#6b7280" }}>{chatLoading ? "respondendo..." : "online"}</div>
           </div>
 
-          <div style={{ flex: 1, padding: 12, overflowY: "auto", display: "flex", flexDirection: "column", gap: 10 }}>
+          <div ref={chatListRef} style={{ flex: 1, padding: 12, overflowY: "auto", display: "flex", flexDirection: "column", gap: 10 }} aria-live="polite">
             {chat.length === 0 && (
               <div style={{ fontSize: 14, color: "#6b7280" }}>
                 Pergunte por nome, vertical ou localização. Ex.: "me mostra fintech", "quero ver São Paulo", "quero saber sobre Nubank".
@@ -356,13 +341,14 @@ export default function Home() {
               if (item.role === "user") {
                 return (
                   <div key={item.id} style={{ alignSelf: "flex-end", background: "#2563eb", color: "white", padding: "8px 12px", borderRadius: 12, maxWidth: "80%" }}>
-                    {item.text}
+                    <div style={{ whiteSpace: "pre-wrap" }}>{item.text}</div>
+                    <div style={{ fontSize: 10, color: "#dbeafe", marginTop: 4 }}>{item.ts ? new Date(item.ts).toLocaleTimeString() : ""}</div>
                   </div>
                 )
               }
               return (
                 <div key={item.id} style={{ alignSelf: "flex-start", background: "#f3f4f6", color: "#111827", padding: "8px 12px", borderRadius: 12, maxWidth: "90%" }}>
-                  <div>{item.text}</div>
+                  <div style={{ whiteSpace: "pre-wrap" }}>{item.text}</div>
                   {item.startups && item.startups.length > 0 && (
                     <div style={{ marginTop: 8, display: "grid", gap: 8 }}>
                       {item.startups.slice(0, 5).map((s) => (
@@ -372,23 +358,15 @@ export default function Home() {
                             const found = data.find((d) => String(d.id) === String((s as any).id))
                             if (found) setSelected(found)
                           }}
-                          style={{
-                            textAlign: "left",
-                            border: "1px solid #e5e7eb",
-                            borderRadius: 10,
-                            padding: "8px 10px",
-                            background: "white",
-                            cursor: "pointer"
-                          }}
+                          style={{ textAlign: "left", border: "1px solid #e5e7eb", borderRadius: 10, padding: "8px 10px", background: "white", cursor: "pointer" }}
                         >
                           <div style={{ fontWeight: 600, fontSize: 14 }}>{s.nome_da_startup}</div>
-                          <div style={{ fontSize: 12, color: "#6b7280" }}>
-                            {(s.vertical as string) || "Outro"} • {(s.localizacao as string) || "Não informada"}
-                          </div>
+                          <div style={{ fontSize: 12, color: "#6b7280" }}>{(s.vertical as string) || "Outro"} • {(s.localizacao as string) || "Não informada"}</div>
                         </button>
                       ))}
                     </div>
                   )}
+                  <div style={{ fontSize: 10, color: "#6b7280", marginTop: 4 }}>{item.ts ? new Date(item.ts).toLocaleTimeString() : ""}</div>
                 </div>
               )
             })}
@@ -415,6 +393,8 @@ export default function Home() {
                 padding: "10px 12px",
                 outline: "none"
               }}
+              maxLength={500}
+              aria-label="Mensagem"
             />
             <button
               onClick={sendChat}
@@ -429,6 +409,8 @@ export default function Home() {
                 cursor: chatLoading || chatInput.trim().length === 0 ? "not-allowed" : "pointer",
                 opacity: chatLoading || chatInput.trim().length === 0 ? 0.6 : 1
               }}
+              aria-disabled={chatLoading || chatInput.trim().length === 0}
+              aria-label="Enviar"
             >
               Enviar
             </button>
