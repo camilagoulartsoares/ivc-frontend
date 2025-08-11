@@ -1,0 +1,20 @@
+* [33m45ea4b9[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m refactor(chatbot): otimizar sendChat para reduzir repetições e melhorar tratamento de erros
+* [33maa0b96e[m feat(chatbot): integrar chamada ao backend via api Axios
+* [33mcea33a1[m feat: adicionar seletor de idioma com bandeiras e estilização no Header
+* [33m099f34c[m feat: adicionar seletor de idioma com bandeiras e suporte ao next-i18next
+* [33mba71db2[m Skeleton
+* [33maec7a59[m fix(drag-drop): corrigir comportamento de reorder e evitar que card vá para o fim da lista ao arrastar dentro da mesma coluna
+* [33m55f5c0c[m Update README.md
+* [33mc90eeb2[m Styles filters
+* [33m9163386[m Header finalizado
+* [33m829e61a[m Estilização trello
+* [33mf40a457[m feat: adicionar modal de confirmação ao excluir startup
+* [33m90cd71d[m Dashboard trello
+* [33ma8e60b7[m Mudanças header e login css
+* [33m1dfd0e3[m Modo dark
+* [33m1d7a081[m Mudanças header
+* [33md803bb6[m refactor: criar componente reutilizável de autenticação (AuthLayout)
+* [33m4069c9a[m Início estilização login
+* [33m031935f[m Mudanças
+* [33m2153d43[m Responsividade
+* [33me0053c2[m fix(home): evita erro ao buscar startups sem usuário logado
