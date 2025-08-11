@@ -118,33 +118,47 @@ export default function Home() {
   const startIndex = (currentPage - 1) * itemsPerPage
   const currentItems = filtered.slice(startIndex, startIndex + itemsPerPage)
 
-async function sendChat() {
-  const text = chatInput.trim()
-  if (!text || chatLoading) return
-  const userItem: ChatItem = { id: crypto.randomUUID(), role: "user", text }
-  setChat((c) => [...c, userItem])
-  setChatInput("")
-  setChatLoading(true)
-  try {
-    const { data: json } = await api.get<RespostaBot>("/chatbot", {
-      params: { mensagem: text }
-    })
-    if (json.tipo === "resultado") {
-      const botText = `Encontrei ${json.resposta.length} startup(s).`
-      const botItem: ChatItem = { id: crypto.randomUUID(), role: "bot", text: botText, startups: json.resposta }
-      setChat((c) => [...c, botItem])
-    } else {
-      const botItem: ChatItem = { id: crypto.randomUUID(), role: "bot", text: json.resposta }
-      setChat((c) => [...c, botItem])
-    }
-  } catch {
-    const botItem: ChatItem = { id: crypto.randomUUID(), role: "bot", text: "Erro ao falar com o chatbot. Tente novamente." }
-    setChat((c) => [...c, botItem])
-  } finally {
-    setChatLoading(false)
+  function newId() {
+    return crypto.randomUUID()
   }
-}
 
+  async function sendChat() {
+    const text = chatInput.trim()
+    if (!text || chatLoading) return
+
+    setChat((prev) => [...prev, { id: newId(), role: "user", text }])
+    setChatInput("")
+    setChatLoading(true)
+
+    try {
+      const { data: json } = await api.get<RespostaBot>("/chatbot", {
+        params: { mensagem: text }
+      })
+
+      const botMessage: ChatItem =
+        json.tipo === "resultado"
+          ? {
+              id: newId(),
+              role: "bot",
+              text: `Encontrei ${json.resposta.length} startup(s).`,
+              startups: json.resposta
+            }
+          : {
+              id: newId(),
+              role: "bot",
+              text: json.resposta
+            }
+
+      setChat((prev) => [...prev, botMessage])
+    } catch (err: any) {
+      const message =
+        err?.response?.data?.message ||
+        "Erro ao falar com o chatbot. Tente novamente."
+      setChat((prev) => [...prev, { id: newId(), role: "bot", text: message }])
+    } finally {
+      setChatLoading(false)
+    }
+  }
 
   if (error) return <p>Erro: {error}</p>
 
@@ -353,9 +367,9 @@ async function sendChat() {
                     <div style={{ marginTop: 8, display: "grid", gap: 8 }}>
                       {item.startups.slice(0, 5).map((s) => (
                         <button
-                          key={String(s.id || s.nome_da_startup)}
+                          key={String((s as any).id || s.nome_da_startup)}
                           onClick={() => {
-                            const found = data.find((d) => String(d.id) === String(s.id))
+                            const found = data.find((d) => String(d.id) === String((s as any).id))
                             if (found) setSelected(found)
                           }}
                           style={{
@@ -369,7 +383,7 @@ async function sendChat() {
                         >
                           <div style={{ fontWeight: 600, fontSize: 14 }}>{s.nome_da_startup}</div>
                           <div style={{ fontSize: 12, color: "#6b7280" }}>
-                            {s.vertical || "Outro"} • {s.localizacao || "Não informada"}
+                            {(s.vertical as string) || "Outro"} • {(s.localizacao as string) || "Não informada"}
                           </div>
                         </button>
                       ))}
