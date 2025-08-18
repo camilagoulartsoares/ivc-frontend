@@ -101,7 +101,7 @@ export default function Chatbot({ onSelectStartup, data }: Props) {
     <>
       <button
         onClick={() => setOpen((o) => !o)}
-        className={styles.chatToggle}
+        className={`${styles.chatToggle} ${open ? styles.open : ""}`}
         aria-label={open ? "Fechar chatbot" : "Abrir chatbot"}
       >
         {open ? "×" : "💬"}
@@ -110,8 +110,14 @@ export default function Chatbot({ onSelectStartup, data }: Props) {
       {open && (
         <div className={styles.chatContainer} role="dialog" aria-label="Chatbot de Startups">
           <div className={styles.header}>
-            <div>Assistente de Startups</div>
-            <div className={styles.status}>{loading ? "respondendo..." : "online"}</div>
+            <div className={styles.title}>
+              <span className={styles.brand}>IV</span>
+              Assistente de Startups
+            </div>
+            <div className={styles.status}>
+              <span className={styles.dot} />
+              {loading ? "respondendo..." : "online"}
+            </div>
           </div>
 
           {chat.length === 0 && (
