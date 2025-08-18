@@ -5,6 +5,7 @@ export interface Fundador {
   email: string
 }
 
+
 export interface Startup {
   id: string
   nome_da_startup: string
