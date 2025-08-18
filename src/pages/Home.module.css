@@ -27,3 +27,19 @@
     grid-template-columns: 1fr;
   }
 }
+
+.page {
+  padding: 24px;
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 128px);
+  padding-left: 88px;
+  padding-right: 88px;
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 140px);
+  }
+}
+

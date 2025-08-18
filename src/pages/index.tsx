@@ -34,7 +34,7 @@ export default function Home() {
           try {
             const minhasRes = await api.get<Startup[]>("/startup")
             minhasResData = minhasRes.data
-          } catch {}
+          } catch { }
         }
         const minhasFormatadas = minhasResData.map((s) => ({
           ...s,
@@ -99,7 +99,7 @@ export default function Home() {
 
       <Header />
 
-      <div style={{ padding: "24px" }}>
+      <div className={styles.page}>
         <Filters
           search={search}
           vertical={vertical}
