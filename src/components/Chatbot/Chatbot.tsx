@@ -166,7 +166,6 @@ export default function Chatbot({ onSelectStartup, data }: Props) {
               </div>
             ))}
 
-
             {loading && (
               <div style={{ alignSelf: "flex-start", background: "#f3f4f6", color: "#111827", padding: "8px 12px", borderRadius: 12, maxWidth: "80%", opacity: 0.8 }}>
                 Digitando…
