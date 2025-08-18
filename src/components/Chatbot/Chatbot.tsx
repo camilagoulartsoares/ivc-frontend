@@ -178,8 +178,6 @@ export default function Chatbot({ onSelectStartup, data }: Props) {
               {error}
             </div>
           )}
-
-
           <div style={{ padding: 12, borderTop: "1px solid #e5e7eb", display: "flex", gap: 8 }}>
             <textarea
               value={input}
