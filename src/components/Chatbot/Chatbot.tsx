@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { api } from "@/services/api"
 import { Startup } from "@/types/Startup"
+import styles from "./chatbot.module.css"
 
 type RespostaBot =
   | { tipo: "erro"; resposta: string }
@@ -100,103 +101,74 @@ export default function Chatbot({ onSelectStartup, data }: Props) {
     <>
       <button
         onClick={() => setOpen((o) => !o)}
-        style={{ position: "fixed", right: 24, bottom: 24, width: 56, height: 56, borderRadius: 999, backgroundColor: "#111827", color: "white", border: "none", boxShadow: "0 8px 24px rgba(0,0,0,0.2)", fontSize: 18, cursor: "pointer", zIndex: 50 }}
+        className={styles.chatToggle}
         aria-label={open ? "Fechar chatbot" : "Abrir chatbot"}
       >
         {open ? "×" : "💬"}
       </button>
 
       {open && (
-        <div
-          style={{ position: "fixed", right: 24, bottom: 92, width: 360, maxHeight: 520, background: "white", borderRadius: 16, boxShadow: "0 16px 40px rgba(0,0,0,0.25)", display: "flex", flexDirection: "column", overflow: "hidden", zIndex: 50 }}
-          role="dialog"
-          aria-label="Chatbot de Startups"
-        >
-          <div style={{ padding: "12px 16px", borderBottom: "1px solid #e5e7eb", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <div style={{ fontWeight: 600 }}>Assistente de Startups</div>
-            <div style={{ fontSize: 12, color: "#6b7280" }}>{loading ? "respondendo..." : "online"}</div>
+        <div className={styles.chatContainer} role="dialog" aria-label="Chatbot de Startups">
+          <div className={styles.header}>
+            <div>Assistente de Startups</div>
+            <div className={styles.status}>{loading ? "respondendo..." : "online"}</div>
           </div>
 
           {chat.length === 0 && (
-            <div style={{ padding: 12, borderBottom: "1px solid #e5e7eb", display: "flex", flexWrap: "wrap", gap: 8 }}>
+            <div className={styles.suggestions}>
               {suggestions.map((s) => (
-                <button
-                  key={s}
-                  onClick={() => {
-                    setInput(s)
-                    setTimeout(send, 0)
-                  }}
-                  style={{ fontSize: 12, padding: "6px 10px", borderRadius: 999, border: "1px solid #e5e7eb", background: "#f9fafb", cursor: "pointer" }}
-                >
+                <button key={s} onClick={() => { setInput(s); setTimeout(send, 0) }} className={styles.suggestionBtn}>
                   {s}
                 </button>
               ))}
             </div>
           )}
 
-          <div ref={listRef} style={{ flex: 1, padding: 12, overflowY: "auto", display: "flex", flexDirection: "column", gap: 10 }} aria-live="polite">
+          <div ref={listRef} className={styles.messages} aria-live="polite">
             {chat.length === 0 && (
-              <div style={{ fontSize: 14, color: "#6b7280" }}>
+              <div className={styles.emptyMsg}>
                 Pergunte por nome, vertical ou localização. Ex.: "me mostra fintech", "quero ver São Paulo", "quero saber sobre Nubank".
               </div>
             )}
 
             {chat.map((item) => (
-              <div key={item.id} style={{ alignSelf: item.role === "user" ? "flex-end" : "flex-start", background: item.role === "user" ? "#2563eb" : "#f3f4f6", color: item.role === "user" ? "white" : "#111827", padding: "8px 12px", borderRadius: 12, maxWidth: "90%" }}>
-                <div style={{ whiteSpace: "pre-wrap" }}>{item.text}</div>
+              <div key={item.id} className={`${styles.message} ${item.role === "user" ? styles.userMsg : styles.botMsg}`}>
+                <div>{item.text}</div>
                 {item.startups && item.startups.length > 0 && (
-                  <div style={{ marginTop: 8, display: "grid", gap: 8 }}>
+                  <div className={styles.startupList}>
                     {item.startups.slice(0, 5).map((s) => (
-                      <button
-                        key={String((s as any).id || s.nome_da_startup)}
-                        onClick={() => handleStartupClick(s)}
-                        style={{ textAlign: "left", border: "1px solid #e5e7eb", borderRadius: 10, padding: "8px 10px", background: "white", cursor: "pointer" }}
-                      >
-                        <div style={{ fontWeight: 600, fontSize: 14 }}>{s.nome_da_startup}</div>
-                        <div style={{ fontSize: 12, color: "#6b7280" }}>
-                          {(s.vertical as string) || "Outro"} • {(s.localizacao as string) || "Não informada"}
-                        </div>
+                      <button key={String((s as any).id || s.nome_da_startup)} onClick={() => handleStartupClick(s)} className={styles.startupBtn}>
+                        <div className={styles.startupTitle}>{s.nome_da_startup}</div>
+                        <div className={styles.startupSub}>{(s.vertical as string) || "Outro"} • {(s.localizacao as string) || "Não informada"}</div>
                       </button>
                     ))}
                   </div>
                 )}
-                <div style={{ fontSize: 10, color: item.role === "user" ? "#dbeafe" : "#6b7280", marginTop: 4 }}>
+                <div className={`${styles.time} ${item.role === "user" ? styles.userTime : styles.botTime}`}>
                   {new Date(item.ts).toLocaleTimeString()}
                 </div>
               </div>
             ))}
 
-            {loading && (
-              <div style={{ alignSelf: "flex-start", background: "#f3f4f6", color: "#111827", padding: "8px 12px", borderRadius: 12, maxWidth: "80%", opacity: 0.8 }}>
-                Digitando…
-              </div>
-            )}
+            {loading && <div className={styles.typing}>Digitando…</div>}
           </div>
 
-          {error && (
-            <div style={{ padding: 8, color: "#b91c1c", fontSize: 12, textAlign: "center" }}>
-              {error}
-            </div>
-          )}
-          <div style={{ padding: 12, borderTop: "1px solid #e5e7eb", display: "flex", gap: 8 }}>
+          {error && <div className={styles.error}>{error}</div>}
+
+          <div className={styles.inputArea}>
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value.slice(0, 500))}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault()
-                  send()
-                }
-              }}
+              onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send() } }}
               placeholder="Digite sua mensagem"
               rows={2}
               aria-label="Mensagem"
-              style={{ flex: 1, border: "1px solid #d1d5db", borderRadius: 10, padding: "10px 12px", outline: "none", resize: "none" }}
+              className={styles.textarea}
             />
             <button
               onClick={send}
               disabled={loading || input.trim().length === 0}
-              style={{ background: "#10b981", color: "white", border: "none", padding: "0 14px", borderRadius: 10, fontWeight: 600, cursor: loading || input.trim().length === 0 ? "not-allowed" : "pointer", opacity: loading || input.trim().length === 0 ? 0.6 : 1, height: 42 }}
+              className={`${styles.sendBtn} ${(loading || input.trim().length === 0) ? styles.sendBtnDisabled : ""}`}
               aria-disabled={loading || input.trim().length === 0}
             >
               Enviar
