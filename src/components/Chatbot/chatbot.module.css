@@ -233,4 +233,5 @@
 [data-theme="dark"] .startupSub { color: #9ca3af; }
 
 [data-theme="dark"] .inputArea { background: linear-gradient(180deg,rgba(17,17,17,0.7),rgba(17,17,17,0.9)); border-top-color: rgba(255,255,255,0.06); }
+
 [data-theme="dark"] .textarea { background: #0b0b0b; color: #e5e7eb; border-color: rgba(255,255,255,0.08); }
