@@ -217,21 +217,12 @@
   border: 1px solid rgba(255,255,255,0.06);
 }
 [data-theme="dark"] .header { border-bottom-color: rgba(255,255,255,0.06); }
-
 [data-theme="dark"] .title { color: #e5e7eb; }
-
 [data-theme="dark"] .messages::-webkit-scrollbar-thumb { background: rgba(107,114,128,.6); }
-
 [data-theme="dark"] .emptyMsg { color: #9ca3af; }
-
 [data-theme="dark"] .botMsg { background: rgba(31,41,55,0.7); color: #e5e7eb; border-color: rgba(255,255,255,0.06); }
-
 [data-theme="dark"] .startupBtn { background: #0b0b0b; border-color: rgba(255,255,255,0.06); }
-
 [data-theme="dark"] .startupTitle { color: #f3f4f6; }
-
 [data-theme="dark"] .startupSub { color: #9ca3af; }
-
 [data-theme="dark"] .inputArea { background: linear-gradient(180deg,rgba(17,17,17,0.7),rgba(17,17,17,0.9)); border-top-color: rgba(255,255,255,0.06); }
-
 [data-theme="dark"] .textarea { background: #0b0b0b; color: #e5e7eb; border-color: rgba(255,255,255,0.08); }
