@@ -45,7 +45,6 @@ a {
   color: var(--foreground-light-bg);
 }
 
-/* Exemplo de card escuro (se quiser aplicar diferente no dark mode) */
 [data-theme="dark"] .card {
   background: #2c2c2c;
   color: var(--foreground-dark-bg);
