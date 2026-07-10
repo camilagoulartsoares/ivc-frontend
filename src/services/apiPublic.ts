@@ -1,9 +1,13 @@
 import axios from "axios"
 
+/** Em local, usa o proxy do Next para o Nest. Webhook externo fica como fallback opcional. */
+const baseURL =
+  process.env.NEXT_PUBLIC_PUBLIC_API_URL?.replace(/\/$/, "") || "/api-backend"
+
 export const apiPublic = axios.create({
-  baseURL: "https://make.investidores.vc/webhook",
+  baseURL,
+  timeout: 8000,
   headers: {
     "Content-Type": "application/json",
-    api_key: "alkj239j9csdociva-av98n2vsdoia-asoijf20as",
   },
 })

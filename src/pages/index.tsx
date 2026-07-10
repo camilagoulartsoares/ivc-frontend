@@ -13,6 +13,7 @@ import Chatbot from "../components/Chatbot/Chatbot"
 
 export default function Home() {
   const [data, setData] = useState<Startup[]>([])
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [selected, setSelected] = useState<Startup | null>(null)
   const [search, setSearch] = useState("")
@@ -26,36 +27,66 @@ export default function Home() {
 
   useEffect(() => {
     async function fetchData() {
+      setLoading(true)
+      setError(null)
       try {
-        const publicasRes = await apiPublic.get<Startup[]>("/03ac72cf-2cf2-40d2-86ac-be411e3be742/startups")
+        // Prioridade: backend Nest local (via proxy /api-backend)
+        let publicasResData: Startup[] = []
+        try {
+          const localRes = await api.get<Startup[]>("/startup")
+          publicasResData = Array.isArray(localRes.data) ? localRes.data : []
+        } catch {
+          // Fallback curto no webhook externo (pode estar fora)
+          try {
+            const publicasRes = await apiPublic.get<Startup[]>(
+              "/03ac72cf-2cf2-40d2-86ac-be411e3be742/startups",
+            )
+            publicasResData = Array.isArray(publicasRes.data)
+              ? publicasRes.data
+              : []
+          } catch {
+            publicasResData = []
+          }
+        }
+
         let minhasResData: Startup[] = []
-        const token = typeof window !== "undefined" ? localStorage.getItem("token") : null
+        const token =
+          typeof window !== "undefined" ? localStorage.getItem("token") : null
         if (token) {
           try {
             const minhasRes = await api.get<Startup[]>("/startup")
-            minhasResData = minhasRes.data
-          } catch { }
+            minhasResData = Array.isArray(minhasRes.data) ? minhasRes.data : []
+          } catch {}
         }
+
         const minhasFormatadas = minhasResData.map((s) => ({
           ...s,
           id: String(s.id),
           vertical: s.vertical || "Outro",
           localizacao: s.localizacao || "Não informada",
           cresimento_mom: s.cresimento_mom || 0,
-          isMinha: true
+          isMinha: true,
         }))
-        const publicasFormatadas = publicasRes.data.map((s) => ({
+        const publicasFormatadas = publicasResData.map((s) => ({
           ...s,
           id: String(s.id),
           vertical: s.vertical || "Outro",
           localizacao: s.localizacao || "Não informada",
           cresimento_mom: s.cresimento_mom || 0,
-          isMinha: false
+          isMinha: false,
         }))
-        const todas = [...publicasFormatadas, ...minhasFormatadas]
-        setData(todas)
+
+        // Evita duplicar se ambas vieram do mesmo endpoint local
+        const byId = new Map<string, Startup>()
+        ;[...publicasFormatadas, ...minhasFormatadas].forEach((s) => {
+          byId.set(String(s.id), s)
+        })
+        setData(Array.from(byId.values()))
       } catch (err: any) {
         setError(err.message || "Erro ao carregar startups")
+        setData([])
+      } finally {
+        setLoading(false)
       }
     }
     fetchData()
@@ -125,7 +156,7 @@ export default function Home() {
           localizacaoOptions={localizacaoOptions}
         />
 
-        {!data.length ? (
+        {loading ? (
           <div className={styles["card-grid"]}>
             {Array.from({ length: itemsPerPage }).map((_, index) => (
               <div key={index} style={{ background: "#f3f4f6", borderRadius: "12px", overflow: "hidden", boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)", display: "flex", flexDirection: "column" }}>
@@ -140,7 +171,9 @@ export default function Home() {
           </div>
         ) : filtered.length === 0 ? (
           <p style={{ marginTop: "40px", fontSize: "18px", textAlign: "center", color: "#6b7280" }}>
-            Nenhuma startup encontrada com esses filtros.
+            {data.length === 0
+              ? "Nenhuma startup cadastrada ainda. Cadastre uma ou rode o seed do backend."
+              : "Nenhuma startup encontrada com esses filtros."}
           </p>
         ) : (
           <>

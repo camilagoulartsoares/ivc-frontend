@@ -93,8 +93,10 @@ export default function PainelTrello() {
 
     async function fetchData() {
       try {
-        const resPublic = await apiPublic.get<Startup[]>("/03ac72cf-2cf2-40d2-86ac-be411e3be742/startups")
-        const publicas = resPublic.data.map((s) => ({ ...s, id: String(s.id) }))
+        const resPublic = await api.get<Startup[]>("/startup")
+        const publicas = (Array.isArray(resPublic.data) ? resPublic.data : []).map(
+          (s) => ({ ...s, id: String(s.id) }),
+        )
 
         let privadas: Startup[] = []
         const token = localStorage.getItem("token")
